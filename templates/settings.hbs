@@ -1,0 +1,183 @@
+<div class="herald-settings-content">
+<nav class="herald-tabs">
+  {{#each tabs}}
+    <a class="herald-tab-link {{#if active}}active{{/if}}" data-action="switchTab" data-tab="{{kind}}">{{label}}</a>
+  {{/each}}
+</nav>
+
+{{#each tabs}}
+<section class="herald-tab-panel {{#if active}}active{{/if}}" data-tab="{{kind}}">
+
+  <fieldset>
+    <legend>Message</legend>
+    <input type="text" name="{{kind}}-message" value="{{message}}" class="herald-fullwidth" />
+    <div class="herald-field-picker-row">
+      <select class="herald-field-picker" data-target="{{kind}}-message">
+        <option value="">Insert field...</option>
+        {{#each fieldOptions}}
+          <option value="{{this.path}}">{{this.label}}</option>
+        {{/each}}
+      </select>
+      <input type="text" class="herald-custom-field-path" placeholder="custom.path" />
+      <button type="button" class="herald-custom-field-insert" data-target="{{kind}}-message">Insert</button>
+    </div>
+    <p class="hint">Accepts {{"{{"}}path{{"}}"}} tokens mixed with static text — e.g. "{{"{{"}}actor.name{{"}}"}} has entered the fray!"</p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Subtext</legend>
+    <input type="text" name="{{kind}}-subtext" value="{{subtext}}" class="herald-fullwidth" />
+    <div class="herald-field-picker-row">
+      <select class="herald-field-picker" data-target="{{kind}}-subtext">
+        <option value="">Insert field...</option>
+        {{#each fieldOptions}}
+          <option value="{{this.path}}">{{this.label}}</option>
+        {{/each}}
+      </select>
+      <input type="text" class="herald-custom-field-path" placeholder="custom.path" />
+      <button type="button" class="herald-custom-field-insert" data-target="{{kind}}-subtext">Insert</button>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Portrait Source</legend>
+    <label class="herald-radio">
+      <input type="radio" name="{{kind}}-portraitSource" value="avatar" data-conditional-group="{{kind}}-portraitSource" {{#if (heraldEq portraitSource "avatar")}}checked{{/if}} />
+      Avatar
+    </label>
+    <label class="herald-radio">
+      <input type="radio" name="{{kind}}-portraitSource" value="token" data-conditional-group="{{kind}}-portraitSource" {{#if (heraldEq portraitSource "token")}}checked{{/if}} />
+      Token
+    </label>
+    <p class="hint">Token reads whatever's actually configured in the token's texture slot — image or video, whichever it is. For a specific actor's own custom art, use the Portrait Override button on that actor's Prototype Token config window instead of a shared global path.</p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Backdrop</legend>
+    <label class="herald-radio">
+      <input type="radio" name="{{kind}}-backdropMode" value="none" data-conditional-group="{{kind}}-backdropMode" {{#if (heraldEq backdropMode "none")}}checked{{/if}} />
+      None
+    </label>
+    <label class="herald-radio">
+      <input type="radio" name="{{kind}}-backdropMode" value="color" data-conditional-group="{{kind}}-backdropMode" {{#if (heraldEq backdropMode "color")}}checked{{/if}} />
+      Color
+    </label>
+    <label class="herald-radio">
+      <input type="radio" name="{{kind}}-backdropMode" value="image" data-conditional-group="{{kind}}-backdropMode" {{#if (heraldEq backdropMode "image")}}checked{{/if}} />
+      Image
+    </label>
+
+    <div class="herald-conditional {{#unless (heraldEq backdropMode "color")}}herald-hidden{{/unless}}"
+         data-conditional-for="{{kind}}-backdropMode" data-conditional-value="color">
+      <input type="color" name="{{kind}}-backdropColor" value="{{backdropColor}}" />
+    </div>
+
+    <div class="herald-conditional {{#unless (heraldEq backdropMode "image")}}herald-hidden{{/unless}}"
+         data-conditional-for="{{kind}}-backdropMode" data-conditional-value="image">
+      <div class="herald-field-row">
+        <input type="text" name="{{kind}}-backdropImage" value="{{backdropImage}}" placeholder="path/to/backdrop.jpg" class="herald-fullwidth" />
+        <button type="button" class="herald-browse" data-target="{{kind}}-backdropImage" data-type="image">
+          <i class="fa-solid fa-folder-open"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Backdrop Shape</label>
+      <label class="herald-radio">
+        <input type="radio" name="{{kind}}-backdropAspect" value="portrait" {{#if (heraldEq backdropAspect "portrait")}}checked{{/if}} />
+        Portrait
+      </label>
+      <label class="herald-radio">
+        <input type="radio" name="{{kind}}-backdropAspect" value="landscape" {{#if (heraldEq backdropAspect "landscape")}}checked{{/if}} />
+        Landscape
+      </label>
+      <label class="herald-radio">
+        <input type="radio" name="{{kind}}-backdropAspect" value="square" {{#if (heraldEq backdropAspect "square")}}checked{{/if}} />
+        Square
+      </label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Animation</legend>
+    <label class="herald-radio">
+      <input type="radio" name="{{kind}}-animation" value="slideLeft" {{#if (heraldEq animation "slideLeft")}}checked{{/if}} />
+      Slide Left
+    </label>
+    <label class="herald-radio">
+      <input type="radio" name="{{kind}}-animation" value="slideRight" {{#if (heraldEq animation "slideRight")}}checked{{/if}} />
+      Slide Right
+    </label>
+    <label class="herald-radio">
+      <input type="radio" name="{{kind}}-animation" value="dropIn" {{#if (heraldEq animation "dropIn")}}checked{{/if}} />
+      Drop In
+    </label>
+    <label class="herald-radio">
+      <input type="radio" name="{{kind}}-animation" value="fade" {{#if (heraldEq animation "fade")}}checked{{/if}} />
+      Fade
+    </label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Position</legend>
+    <select name="{{kind}}-position">
+      <option value="center" {{#if (heraldEq position "center")}}selected{{/if}}>Center</option>
+      <option value="topLeft" {{#if (heraldEq position "topLeft")}}selected{{/if}}>Top Left</option>
+      <option value="topRight" {{#if (heraldEq position "topRight")}}selected{{/if}}>Top Right</option>
+      <option value="bottomLeft" {{#if (heraldEq position "bottomLeft")}}selected{{/if}}>Bottom Left</option>
+      <option value="bottomRight" {{#if (heraldEq position "bottomRight")}}selected{{/if}}>Bottom Right</option>
+    </select>
+  </fieldset>
+
+  <fieldset>
+    <legend>Audio &amp; Timing</legend>
+    <div class="form-group">
+      <label>Audio Track (optional)</label>
+      <div class="herald-field-row">
+        <input type="text" name="{{kind}}-audioPath" value="{{audioPath}}" placeholder="path/to/audio.ogg" class="herald-fullwidth" />
+        <button type="button" class="herald-browse" data-target="{{kind}}-audioPath" data-type="audio">
+          <i class="fa-solid fa-folder-open"></i>
+        </button>
+      </div>
+      <p class="hint">If set, mutes the portrait's own video audio so the two don't play at once. With no track set, a voiced portrait video is free to play its own sound.</p>
+    </div>
+
+    <div class="form-group">
+      <label>
+        <input type="checkbox" name="{{kind}}-muteAudio" {{#if muteAudio}}checked{{/if}} />
+        Mute Audio (overrides everything above, no matter what)
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label>Duration (ms)</label>
+      <input type="number" name="{{kind}}-timer" value="{{timer}}" min="0" step="500" />
+      <p class="hint">0 requires clicking the card to close it manually.</p>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Preview</legend>
+    <div class="form-group">
+      <label>Preview using</label>
+      <select class="herald-preview-actor">
+        {{#each sampleActors}}
+          <option value="{{this.id}}">{{this.name}}</option>
+        {{/each}}
+      </select>
+    </div>
+    <button type="button" class="herald-preview-button" data-action="preview">
+      <i class="fa-solid fa-eye"></i> Preview
+    </button>
+  </fieldset>
+
+</section>
+{{/each}}
+
+<footer class="herald-settings-footer">
+  <button type="button" data-action="save">
+    <i class="fa-solid fa-floppy-disk"></i> Save
+  </button>
+</footer>
+</div>
