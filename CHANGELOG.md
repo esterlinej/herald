@@ -3,6 +3,21 @@
 All notable changes to Herald are documented here. Format loosely
 follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.0.0]
+
+First stable release. Everything below 1.0.0 was iterative
+pre-release development in a single continuous build session — this
+tag marks the point where the full feature set (triggering, render
+pipeline, Settings form, per-actor override, sizing, GM-gating, and the
+Chat Card companion) has been tested end to end and is considered
+stable.
+
+### Changed
+- `download` in `module.json` now points to this specific tagged
+  release archive (`refs/tags/v1.0.0.zip`) rather than the floating
+  `main` branch, so this manifest snapshot always resolves to exactly
+  these files regardless of future commits to `main`.
+
 ## [0.7.0]
 
 ### Added
