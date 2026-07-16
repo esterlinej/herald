@@ -42,10 +42,12 @@ implementation, split by PC vs NPC since fields like Blurb and
 Personality only exist on one actor type each), plus a custom-path box
 for anything neither anticipates.
 
-**Portrait Source** — Avatar (the sheet portrait), Token (whatever's
+**Portrait Source** — Avatar (the sheet portrait) or Token (whatever's
 actually configured in the token's texture slot — image or video,
 detected automatically by file extension, no separate mode toggle
-needed), or Custom (an explicit file, independent of either).
+needed). No global Custom option — a shared custom path for every actor
+of a type has the same problem the per-actor override below exists to
+fix, so Custom is only available per-actor.
 
 **Per-actor portrait override** — a small icon button on the Prototype
 Token config window's own header lets one specific actor override just
@@ -62,6 +64,22 @@ portrait video is free to play its own embedded sound.
 current (unsaved) form values against a real sample actor and shows it
 only on your own screen, using the exact same render pipeline a live
 trigger uses.
+
+**Chat card companion** (on by default, toggleable) — every trigger also
+posts a chat message with the portrait (image or video — neither
+autoplays in chat, so it embeds as-is), resolved name, and subtext, so
+the announcement persists even if someone missed the animated overlay.
+
+**Card Size** (Small / Medium / Large) — a shared, world-level setting.
+Herald's card is broadcast to and rendered identically for everyone at
+the table, not a personal preview pane, so this scales the whole card
+(portrait, backdrop, text) the same for everyone rather than being a
+per-person preference.
+
+**GM-only, by design and in practice** — the Token HUD button and Actor
+Directory entry are both hidden from players outright (not just
+disabled), and the trigger function itself checks GM status as a second
+layer.
 
 ---
 
@@ -92,8 +110,7 @@ Settings") configures the PC and NPC templates, each with its own tab:
 - **Message / Subtext** — text fields with `{{path}}` templating; the
   field-picker dropdown beside each inserts a token at the cursor
   position, so static text and live data mix freely.
-- **Portrait Source** — Avatar / Token / Custom, with a Browse button
-  and file path when Custom is selected.
+- **Portrait Source** — Avatar or Token.
 - **Backdrop** — None / Color / Image, plus a shape selector (Portrait /
   Landscape / Square) when a backdrop is set.
 - **Animation** and **Position**.
@@ -109,18 +126,16 @@ to override just that actor's portrait, independent of the global
 template's Portrait Source — leave blank to use the template's own
 configured source.
 
+**Foundry's core Configure Settings list** also has two directly-editable
+options for Herald, alongside the "Herald — Settings" menu button:
+- **Card Size** — Small / Medium / Large, applies to everyone.
+- **Post Chat Card** — checkbox, on by default; disable if you'd rather
+  triggers stay purely visual with nothing added to the chat log.
+
 ---
 
 ## Roadmap
 
-- Chat card companion — when triggered, also post a chat message with
-  the portrait (image or video — neither autoplays in chat, so no need
-  to fall back to a static thumbnail even when the trigger used a video
-  token), resolved name, and subtext, so the announcement persists even
-  if someone missed the animated overlay itself
-- Card size scale (S/M/L) — separate from backdrop aspect (which
-  controls shape, not size); everything's currently fixed pixel
-  dimensions, which may not suit every screen/preference
 - Stabilized macro/scripting API — `game.modules.get("herald").api`
   currently exists for internal testing during development and works,
   but hasn't been treated as a committed public surface (names/shapes
@@ -130,6 +145,10 @@ configured source.
   just portrait) — deferred in favor of shipping the universal
   templates first; the portrait-only override above covers the most
   common real need without the overhead of a full per-actor system
+- D&D 5e field map — `SYSTEM_FIELDS` currently only has a PF2e entry;
+  the core resolver/render pipeline is system-agnostic, but the
+  field-picker's convenience dropdown needs real D&D 5e actor data
+  verified the same rigorous way PF2e's was, not guessed paths
 
 ---
 

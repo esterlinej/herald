@@ -26,6 +26,10 @@ message, and subtext.
 
 ![Herald card example](../assets/images/guide/herald-card-example.png)
 
+**Chat Card** — the same card and text is added to the chat, enabled by default this feature can be disabled within the foundry settings.
+
+![Herald card example](../assets/images/guide/herald-chat-card-example.png)
+
 ---
 
 ## Settings — Message & Subtext

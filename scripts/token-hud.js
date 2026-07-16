@@ -16,6 +16,10 @@ import { triggerHerald } from "./trigger.js";
  */
 export function registerTokenHudButton() {
   Hooks.on("renderTokenHUD", (app, html) => {
+    // Players can open Token HUD for their own owned tokens — without
+    // this check, they'd see (and could click) the Herald button too.
+    if (!game.user.isGM) return;
+
     const root = html instanceof HTMLElement ? html : html?.[0];
     if (!root) return;
 

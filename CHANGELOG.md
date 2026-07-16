@@ -3,6 +3,63 @@
 All notable changes to Herald are documented here. Format loosely
 follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [0.7.0]
+
+### Added
+- Chat card companion — every trigger posts a chat message with the
+  portrait, resolved message, and subtext (neither video nor audio
+  autoplays in chat, confirmed against real behavior, so the portrait
+  embeds as-is with no special handling needed). Posted exactly once,
+  from the triggering client only — `showHeraldCard()` runs on every
+  connected client via the socket broadcast, so posting from there
+  would have created one duplicate chat message per player.
+- `Post Chat Card` setting — world-scope checkbox, on by default,
+  alongside Card Size in Foundry's native Configure Settings list.
+
+## [0.6.2]
+
+### Changed
+- Card Size scale shifted up a tier: Small is now what was previously
+  the default/Medium size (1.0×), Medium is what was previously Large
+  (1.3×), and Large is a genuinely new, bigger top tier (1.6×).
+
+## [0.6.1]
+
+### Fixed
+- Herald could be triggered by players, not just GMs — the Token HUD
+  button (players can open Token HUD for their own owned tokens) and
+  Actor Directory entry were both visible/clickable regardless of role.
+  Both now hidden entirely for non-GMs (the directory entry via the
+  standard `condition` property, rather than showing and failing
+  silently on click), plus a second-layer check inside `triggerHerald()`
+  itself and the Prototype Token override button.
+
+## [0.6.0]
+
+### Added
+- Card Size setting (Small/Medium/Large) — world-scope, shared for
+  everyone at the table rather than a personal preference, since
+  Herald's card is broadcast and rendered identically for all connected
+  clients (unlike Game Master Screen's GM-only popout preview, which a
+  per-client preference suited). Applied via a `--herald-scale` CSS
+  custom property inherited down to the portrait, all three backdrop
+  aspect variants, and text sizing, so everything scales together.
+
+## [0.5.2]
+
+### Removed
+- Custom removed as a selectable global Portrait Source (both PC and
+  NPC templates) — a shared custom path for every actor of a type has
+  the exact same one-path-for-everyone problem the per-actor Portrait
+  Override exists to fix, so it just re-invited the anti-pattern.
+  `PORTRAIT_SOURCES.CUSTOM` and the resolver's handling of it remain in
+  code for a future macro/API user scripting a one-off trigger
+  explicitly — only the Settings UI option was removed.
+
+### Fixed
+- Preview button sat flush against the "Preview using" dropdown above
+  it — added spacing.
+
 ## [0.5.1]
 
 ### Fixed

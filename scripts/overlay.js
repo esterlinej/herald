@@ -1,4 +1,4 @@
-import { MODULE_ID, BACKDROP_MODES, debug } from "./const.js";
+import { MODULE_ID, SETTINGS, BACKDROP_MODES, CARD_SIZE_SCALES, debug } from "./const.js";
 
 let activeCardEl = null;
 let activeTimeoutId = null;
@@ -21,6 +21,15 @@ export async function showHeraldCard(resolved) {
   const wrapper = document.createElement("div");
   wrapper.innerHTML = contentHtml;
   const cardEl = wrapper.firstElementChild;
+
+  // Card Size is a shared world setting, not part of the resolved
+  // payload — every client already has the same synced value locally
+  // (it's world-scope), so reading it here at render time produces
+  // identical results everywhere without needing to broadcast it too.
+  const cardSize = game.settings.get(MODULE_ID, SETTINGS.CARD_SIZE);
+  const scale = CARD_SIZE_SCALES[cardSize] ?? 1;
+  cardEl.style.setProperty("--herald-scale", scale);
+
   document.body.appendChild(cardEl);
   activeCardEl = cardEl;
 

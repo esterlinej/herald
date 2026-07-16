@@ -1,4 +1,4 @@
-import { MODULE_ID, SETTINGS, defaultTemplate } from "./const.js";
+import { MODULE_ID, SETTINGS, CARD_SIZES, defaultTemplate } from "./const.js";
 import { HeraldSettingsApp } from "./settings-app.js";
 
 /**
@@ -22,6 +22,35 @@ export function registerSettings() {
     config: false,
     type: Object,
     default: defaultTemplate()
+  });
+
+  // A simple scalar choice, unlike the two templates above — fits
+  // Foundry's native settings-list rendering directly, no custom form
+  // needed. World-scoped and shared deliberately: see CARD_SIZES in
+  // const.js for why this isn't a per-client preference.
+  game.settings.register(MODULE_ID, SETTINGS.CARD_SIZE, {
+    name: "Card Size",
+    hint: "How large Herald's announcement card renders for everyone at the table — shared for the whole world, not a personal preference, since everyone sees the same broadcast.",
+    scope: "world",
+    config: true,
+    type: String,
+    choices: {
+      [CARD_SIZES.SMALL]: "Small",
+      [CARD_SIZES.MEDIUM]: "Medium",
+      [CARD_SIZES.LARGE]: "Large"
+    },
+    default: CARD_SIZES.MEDIUM,
+    restricted: true
+  });
+
+  game.settings.register(MODULE_ID, SETTINGS.CHAT_CARD_ENABLED, {
+    name: "Post Chat Card",
+    hint: "When Herald triggers, also post a chat message with the portrait, resolved name, and subtext — so the announcement persists even if someone missed the animated overlay itself.",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: true,
+    restricted: true
   });
 
   game.settings.register(MODULE_ID, SETTINGS.DEBUG_LOGGING, {

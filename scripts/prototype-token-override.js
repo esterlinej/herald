@@ -25,6 +25,8 @@ export function registerPrototypeTokenOverrideButton() {
 }
 
 function injectOverrideButton(app, html) {
+  if (!game.user.isGM) return;
+
   const root = html instanceof HTMLElement ? html : html?.[0];
   const header = root?.closest(".application")?.querySelector(".window-header") ?? root?.querySelector(".window-header");
   if (!header) {

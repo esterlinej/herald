@@ -33,6 +33,10 @@ export function registerActorDirectoryContextMenu() {
     menuItems.push({
       name: "Herald",
       icon: '<i class="fa-solid fa-bullhorn"></i>',
+      // Hides the entry entirely for non-GMs rather than showing it and
+      // failing silently on click — players can see limited context
+      // menu entries for actors they own.
+      condition: () => game.user.isGM,
       callback: (li) => {
         const entryElement = li instanceof HTMLElement ? li : li?.[0];
         const actorId = entryElement?.dataset?.entryId ?? entryElement?.dataset?.documentId;

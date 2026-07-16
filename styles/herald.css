@@ -205,17 +205,17 @@
    flex within whatever box results, so landscape/portrait modes
    naturally leave visible frame art above/below or left/right of it. */
 .herald-backdrop-aspect-square {
-  width: 460px;
+  width: calc(460px * var(--herald-scale, 1));
   aspect-ratio: 1 / 1;
 }
 
 .herald-backdrop-aspect-landscape {
-  width: 560px;
+  width: calc(560px * var(--herald-scale, 1));
   aspect-ratio: 3 / 2;
 }
 
 .herald-backdrop-aspect-portrait {
-  width: 400px;
+  width: calc(400px * var(--herald-scale, 1));
   aspect-ratio: 2 / 3;
 }
 
@@ -236,8 +236,8 @@
 .herald-portrait-wrap {
   position: relative;
   z-index: 1;
-  width: 320px;
-  height: 320px;
+  width: calc(320px * var(--herald-scale, 1));
+  height: calc(320px * var(--herald-scale, 1));
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
@@ -256,21 +256,46 @@
   left: 0;
   right: 0;
   z-index: 1;
-  padding: 24px 14px 10px;
+  padding: calc(24px * var(--herald-scale, 1)) calc(14px * var(--herald-scale, 1)) calc(10px * var(--herald-scale, 1));
   background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
 }
 
 .herald-message {
   color: #fff;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
-  font-size: 20px;
+  font-size: calc(20px * var(--herald-scale, 1));
   font-weight: 700;
 }
 
 .herald-subtext {
   color: #fff;
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.9);
-  font-size: 13px;
+  font-size: calc(13px * var(--herald-scale, 1));
   font-weight: 400;
   opacity: 0.9;
+}
+
+/* Chat card companion */
+.herald-chat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.herald-chat-card img,
+.herald-chat-card video {
+  width: 100%;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 6px;
+  display: block;
+}
+
+.herald-chat-message {
+  font-weight: 700;
+}
+
+.herald-chat-subtext {
+  font-size: 0.85em;
+  opacity: 0.85;
 }

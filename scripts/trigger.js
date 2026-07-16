@@ -2,6 +2,7 @@ import { MODULE_ID, ACTOR_KINDS, SETTINGS, defaultTemplate, debug } from "./cons
 import { resolveTemplate } from "./resolver.js";
 import { showHeraldCard } from "./overlay.js";
 import { broadcastTrigger } from "./socket.js";
+import { postHeraldChatCard } from "./chat-card.js";
 
 /**
  * Shared trigger path for both the Token HUD button and the Actor
@@ -16,8 +17,18 @@ import { broadcastTrigger } from "./socket.js";
  * on a socket round-trip to see their own action), then broadcasts to
  * every other connected client — sockets don't echo back to the sender,
  * so both steps are needed for everyone to actually see it.
+ *
+ * GM-only. The Token HUD and Actor Directory entry points already hide
+ * the trigger UI from non-GMs, but this check exists here too as a
+ * second layer, since anyone with a plain macro API function like this
+ * exposed could otherwise call it directly.
  */
 export function triggerHerald({ actor, token } = {}) {
+  if (!game.user.isGM) {
+    debug("triggerHerald called by a non-GM user — ignoring");
+    return;
+  }
+
   if (!actor) {
     ui.notifications.warn("Herald: no actor to announce.");
     return;
@@ -31,4 +42,8 @@ export function triggerHerald({ actor, token } = {}) {
 
   showHeraldCard(resolved);
   broadcastTrigger(resolved);
+
+  if (game.settings.get(MODULE_ID, SETTINGS.CHAT_CARD_ENABLED)) {
+    postHeraldChatCard(resolved, actor);
+  }
 }

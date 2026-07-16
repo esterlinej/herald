@@ -49,6 +49,25 @@ export const BACKDROP_ASPECTS = {
 };
 
 /**
+ * Card Size is a shared, world-scope setting, not part of either
+ * template — Herald's card is broadcast to and rendered identically for
+ * everyone at the table, not a personal preview pane like Game Master
+ * Screen's GM Popout Size, so everyone should see the same size for a
+ * given announcement rather than each person picking their own.
+ */
+export const CARD_SIZES = {
+  SMALL: "small",
+  MEDIUM: "medium",
+  LARGE: "large"
+};
+
+export const CARD_SIZE_SCALES = {
+  [CARD_SIZES.SMALL]: 1,
+  [CARD_SIZES.MEDIUM]: 1.3,
+  [CARD_SIZES.LARGE]: 1.6
+};
+
+/**
  * What visual actually renders. Not every table uses the token slot for
  * an actual token image — some repurpose it for an animated video loop
  * instead of a traditional top-down token. AVATAR and TOKEN read from
@@ -156,5 +175,7 @@ export function defaultTemplate() {
 export const SETTINGS = {
   TEMPLATE_PC: "templatePc",
   TEMPLATE_NPC: "templateNpc",
+  CARD_SIZE: "cardSize",
+  CHAT_CARD_ENABLED: "chatCardEnabled",
   DEBUG_LOGGING: "debugLogging"
 };

@@ -1,0 +1,10 @@
+<div class="herald-chat-card">
+  {{#if portraitIsVideo}}
+    <video src="{{portraitPath}}" controls></video>
+  {{else}}
+    <img src="{{portraitPath}}" alt="" />
+  {{/if}}
+
+  {{#if message}}<div class="herald-chat-message">{{message}}</div>{{/if}}
+  {{#if subtext}}<div class="herald-chat-subtext">{{subtext}}</div>{{/if}}
+</div>
