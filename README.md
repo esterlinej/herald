@@ -4,6 +4,8 @@ Foundry VTT module for animated actor/NPC intro announcements. Slide,
 drop, or fade a token's portrait onto every player's screen with custom
 text and live actor data pulled straight from the actor sheet.
 
+![Token HUD trigger](assets/images/guide/herald-card-large-example.png)
+
 📸 **[Visual Guide](docs/GUIDE.md)** — screenshots of every part of the
 module, if you'd rather look than read.
 
@@ -31,7 +33,9 @@ an announcement, not a blocking overlay.
 **Optional backdrop** — a secondary panel behind the portrait/video,
 solid color or a second image, in Portrait, Landscape, or Square
 proportions, for real ornate-frame-style art rather than a same-size
-panel peeking out from behind.
+panel peeking out from behind. Three ready-to-use sample backdrops
+(one per aspect) ship in `assets/images/sample/` — a quick way to see
+what the feature looks like before sourcing your own art.
 
 **Live actor data in your text** — message and subtext fields accept
 `{{path}}` tokens resolved against the triggering actor/token at render
@@ -112,7 +116,10 @@ Settings") configures the PC and NPC templates, each with its own tab:
   position, so static text and live data mix freely.
 - **Portrait Source** — Avatar or Token.
 - **Backdrop** — None / Color / Image, plus a shape selector (Portrait /
-  Landscape / Square) when a backdrop is set.
+  Landscape / Square) when a backdrop is set. Sample art matching each
+  shape ships at `assets/images/sample/portrait-sample-backdrop.jpg`,
+  `landscape-sample-backdrop.jpg`, and `square-sample-backdrop.jpg` — a
+  quick way to see it in action before sourcing your own.
 - **Animation** and **Position**.
 - **Audio Track**, **Mute Audio**, and **Duration**.
 - **Preview** — pick a sample actor of the matching type and see

@@ -16,6 +16,17 @@ follows [Keep a Changelog](https://keepachangelog.com/).
 - `Post Chat Card` setting — world-scope checkbox, on by default,
   alongside Card Size in Foundry's native Configure Settings list.
 
+### Fixed
+- Found in self-review before this PR merged: the Settings form's
+  Position field never actually saved a non-default selection. It's a
+  `<select>`, but `readTemplateFromForm()` read it with the same
+  `input[name=...]:checked` query used for the genuinely radio-based
+  fields (Portrait Source, Backdrop Mode/Shape, Animation) — a
+  `<select>` isn't an `<input>`, so that query always matched nothing,
+  and Save silently wrote "Center" regardless of what was actually
+  chosen in the dropdown. Also removed an unused `MODULE_ID` import in
+  `token-hud.js`.
+
 ## [0.6.2]
 
 ### Changed

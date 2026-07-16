@@ -224,7 +224,12 @@ function readTemplateFromForm(root, kind) {
     backdropImage: val("backdropImage"),
     backdropAspect: radioValue("backdropAspect") ?? BACKDROP_ASPECTS.LANDSCAPE,
     animation: radioValue("animation") ?? ANIMATIONS.SLIDE_LEFT,
-    position: radioValue("position") ?? POSITIONS.CENTER,
+    // Position is a <select>, not radio inputs — radioValue()'s
+    // input[name=...]:checked query never matches a <select> at all,
+    // so this silently always fell back to Center regardless of what
+    // was actually selected. val() reads .value generically off
+    // whatever element has this name, which works correctly for both.
+    position: val("position") || POSITIONS.CENTER,
     audioPath: val("audioPath"),
     muteAudio: checked("muteAudio"),
     timer: Number(val("timer")) || 0

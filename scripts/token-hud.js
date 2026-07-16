@@ -1,4 +1,4 @@
-import { MODULE_ID, debug } from "./const.js";
+import { debug } from "./const.js";
 import { triggerHerald } from "./trigger.js";
 
 /**
