@@ -1,0 +1,14 @@
+# Editor
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# In case build tooling gets added later
+node_modules/
+dist/
+
+# Local scratch files
+*.log

@@ -1,0 +1,23 @@
+<div class="herald-card herald-position-{{position}} herald-anim-{{animation}}">
+  <div class="herald-frame {{#if hasBackdrop}}herald-frame-has-backdrop herald-backdrop-aspect-{{backdropAspect}}{{/if}}">
+    {{#if hasBackdrop}}
+      <div class="herald-backdrop {{#if isColorBackdrop}}herald-backdrop-color{{/if}}{{#if isImageBackdrop}}herald-backdrop-image{{/if}}"
+           style="{{#if isColorBackdrop}}background-color: {{backdropColor}};{{/if}}{{#if isImageBackdrop}}background-image: url('{{backdropImage}}');{{/if}}"></div>
+    {{/if}}
+
+    <div class="herald-portrait-wrap">
+      {{#if portraitIsVideo}}
+        <video class="herald-portrait" src="{{portraitPath}}" autoplay loop {{#if portraitMuted}}muted{{/if}} playsinline></video>
+      {{else}}
+        <img class="herald-portrait" src="{{portraitPath}}" alt="" />
+      {{/if}}
+
+      {{#if hasText}}
+        <div class="herald-text-overlay">
+          {{#if message}}<div class="herald-message">{{message}}</div>{{/if}}
+          {{#if subtext}}<div class="herald-subtext">{{subtext}}</div>{{/if}}
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</div>
