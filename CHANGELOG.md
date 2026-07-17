@@ -3,6 +3,16 @@
 All notable changes to Herald are documented here. Format loosely
 follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.0.1]
+
+### Removed
+- The three sample backdrop images (`assets/images/sample/`) were
+  AI-generated (Grok Imagine) and don't comply with Foundry's AI
+  Content Policy (Section 4.2: prepared visual assets must be
+  human-made, no exception). Removed, along with their mentions in the
+  README — not integral to the module itself, just a convenience
+  nobody had actually used yet.
+
 ## [1.0.0]
 
 First stable release. Everything below 1.0.0 was iterative
