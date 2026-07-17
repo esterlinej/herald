@@ -2,7 +2,7 @@
   "id": "herald",
   "title": "Herald",
   "description": "Foundry VTT module for animated actor/NPC intro announcements. Slide, drop, or fade a token's portrait onto every player's screen with custom text and live actor data pulled straight from the actor sheet.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "compatibility": {
     "minimum": "14",
     "verified": "14.364",
@@ -31,6 +31,6 @@
   ],
   "url": "https://github.com/esterlinej/herald",
   "manifest": "https://raw.githubusercontent.com/esterlinej/herald/main/module.json",
-  "download": "https://github.com/esterlinej/herald/archive/refs/tags/v1.0.0.zip",
+  "download": "https://github.com/esterlinej/herald/archive/refs/tags/v1.0.1.zip",
   "license": "LICENSE"
 }
