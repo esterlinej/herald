@@ -4,6 +4,8 @@ Foundry VTT module for animated actor/NPC intro announcements. Slide,
 drop, or fade a token's portrait onto every player's screen with custom
 text and live actor data pulled straight from the actor sheet.
 
+![Token HUD trigger](assets/images/guide/herald-card-large-example.png)
+
 📸 **[Visual Guide](docs/GUIDE.md)** — screenshots of every part of the
 module, if you'd rather look than read.
 
