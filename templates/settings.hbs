@@ -9,6 +9,19 @@
 <section class="herald-tab-panel {{#if active}}active{{/if}}" data-tab="{{kind}}">
 
   <fieldset>
+    <legend>Portrait Source</legend>
+    <label class="herald-radio">
+      <input type="radio" name="{{kind}}-portraitSource" value="avatar" data-conditional-group="{{kind}}-portraitSource" {{#if (heraldEq portraitSource "avatar")}}checked{{/if}} />
+      Avatar
+    </label>
+    <label class="herald-radio">
+      <input type="radio" name="{{kind}}-portraitSource" value="token" data-conditional-group="{{kind}}-portraitSource" {{#if (heraldEq portraitSource "token")}}checked{{/if}} />
+      Token
+    </label>
+    <p class="hint">Token reads whatever's actually configured in the token's texture slot — image or video, whichever it is. For a specific actor's own custom art, use the Template Override button (Portrait Source section) on that actor's Prototype Token config window instead of a shared global path.</p>
+  </fieldset>
+
+  <fieldset>
     <legend>Message</legend>
     <input type="text" name="{{kind}}-message" value="{{message}}" class="herald-fullwidth" />
     <div class="herald-field-picker-row">
@@ -37,19 +50,6 @@
       <input type="text" class="herald-custom-field-path" placeholder="custom.path" />
       <button type="button" class="herald-custom-field-insert" data-target="{{kind}}-subtext">Insert</button>
     </div>
-  </fieldset>
-
-  <fieldset>
-    <legend>Portrait Source</legend>
-    <label class="herald-radio">
-      <input type="radio" name="{{kind}}-portraitSource" value="avatar" data-conditional-group="{{kind}}-portraitSource" {{#if (heraldEq portraitSource "avatar")}}checked{{/if}} />
-      Avatar
-    </label>
-    <label class="herald-radio">
-      <input type="radio" name="{{kind}}-portraitSource" value="token" data-conditional-group="{{kind}}-portraitSource" {{#if (heraldEq portraitSource "token")}}checked{{/if}} />
-      Token
-    </label>
-    <p class="hint">Token reads whatever's actually configured in the token's texture slot — image or video, whichever it is. For a specific actor's own custom art, use the Portrait Override button on that actor's Prototype Token config window instead of a shared global path.</p>
   </fieldset>
 
   <fieldset>
@@ -157,8 +157,14 @@
     </div>
   </fieldset>
 
-  <fieldset>
+</section>
+{{/each}}
+
+<div class="herald-fixed-footer-area">
+  {{#each tabs}}
+  <fieldset class="herald-fixed-preview {{#if active}}active{{/if}}" data-tab="{{kind}}">
     <legend>Preview</legend>
+    <p class="hint">Resolves the form above (even unsaved changes) against whichever sample actor you pick below, and shows it only on your screen.</p>
     <div class="form-group">
       <label>Preview using</label>
       <select class="herald-preview-actor">
@@ -171,13 +177,12 @@
       <i class="fa-solid fa-eye"></i> Preview
     </button>
   </fieldset>
+  {{/each}}
 
-</section>
-{{/each}}
-
-<footer class="herald-settings-footer">
-  <button type="button" data-action="save">
-    <i class="fa-solid fa-floppy-disk"></i> Save
-  </button>
-</footer>
+  <footer class="herald-settings-footer">
+    <button type="button" data-action="save">
+      <i class="fa-solid fa-floppy-disk"></i> Save
+    </button>
+  </footer>
+</div>
 </div>

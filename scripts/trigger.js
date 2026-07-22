@@ -35,7 +35,20 @@ export function triggerHerald({ actor, token } = {}) {
   }
 
   const templateKey = actor.type === ACTOR_KINDS.PC ? SETTINGS.TEMPLATE_PC : SETTINGS.TEMPLATE_NPC;
-  const template = game.settings.get(MODULE_ID, templateKey) ?? defaultTemplate();
+  const globalTemplate = game.settings.get(MODULE_ID, templateKey) ?? defaultTemplate();
+
+  // A full per-actor override (set via the Prototype Token config
+  // window's Herald button, "Override for <actor>" section) no longer
+  // carries portrait fields at all — those are handled separately by
+  // the "portraitOverride" flag, which resolvePortraitPath() checks on
+  // its own regardless of whether this override exists. So this is
+  // merged OVER the global template rather than substituted wholesale:
+  // the override's own fields win, and portraitSource/customPortraitPath
+  // (absent from the override object) naturally fall through to the
+  // global template's values, which resolvePortraitPath uses only as
+  // its own fallback anyway.
+  const override = actor.getFlag(MODULE_ID, "templateOverride");
+  const template = override ? { ...globalTemplate, ...override } : globalTemplate;
 
   const resolved = resolveTemplate(template, { actor, token });
   debug(`Triggered for "${actor.name}" (${actor.type})`, resolved);

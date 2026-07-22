@@ -159,6 +159,13 @@ export class HeraldSettingsApp extends HandlebarsApplicationMixin(ApplicationV2)
     this.element.querySelectorAll(".herald-tab-panel").forEach((panel) => {
       panel.classList.toggle("active", panel.dataset.tab === tabKind);
     });
+    // Preview lives outside the scrollable tab panel now (always visible
+    // next to Save, no scrolling required to reach it) but still needs
+    // its own sample-actor list per tab kind, so it switches in lockstep
+    // with the tab panel itself rather than living inside it.
+    this.element.querySelectorAll(".herald-fixed-preview").forEach((preview) => {
+      preview.classList.toggle("active", preview.dataset.tab === tabKind);
+    });
   }
 
   static async _onSave() {
@@ -179,12 +186,12 @@ export class HeraldSettingsApp extends HandlebarsApplicationMixin(ApplicationV2)
    * genuinely what triggering would produce, not an approximation.
    */
   static async _onPreview() {
-    const activePanel = this.element.querySelector(".herald-tab-panel.active");
-    const kind = activePanel?.dataset.tab;
+    const activePreview = this.element.querySelector(".herald-fixed-preview.active");
+    const kind = activePreview?.dataset.tab;
     if (!kind) return;
 
     const template = readTemplateFromForm(this.element, kind);
-    const sampleActorId = activePanel.querySelector(".herald-preview-actor")?.value;
+    const sampleActorId = activePreview.querySelector(".herald-preview-actor")?.value;
     const actor = game.actors.get(sampleActorId);
     if (!actor) {
       ui.notifications.warn("Herald: pick a sample actor to preview against.");

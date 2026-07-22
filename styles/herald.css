@@ -105,13 +105,78 @@
   justify-content: flex-end;
 }
 
+/* Preview + Save both sit here now, outside .herald-tab-panel's own
+   scroll area — same "always visible, no scrolling required" treatment
+   as the Actor Template Override app's Enable Override checkbox and
+   Preview button below. */
+.herald-fixed-footer-area {
+  flex: 0 0 auto;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  margin-top: 10px;
+  padding-top: 10px;
+}
+
+.herald-fixed-preview {
+  display: none;
+}
+
+.herald-fixed-preview.active {
+  display: block;
+}
+
+.herald-fixed-footer-area .herald-settings-footer {
+  border-top: none;
+  margin-top: 8px;
+  padding-top: 0;
+}
+
+/* Actor Template Override app — the rest of the form dims when the
+   Enable Override checkbox is off, reinforcing that an unchecked-and-
+   saved state means "inherit the global template", not "override with
+   whatever these fields happen to show". */
+.herald-actor-override-app .herald-settings-content {
+  gap: 12px;
+  overflow: hidden; /* the scroll container is .herald-override-fields below; this just stops double scrollbars */
+}
+
+.herald-actor-override-app .herald-override-enable {
+  margin-bottom: 0;
+  flex: 0 0 auto;
+}
+
+.herald-actor-override-app .herald-override-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1 1 auto;
+  min-height: 0; /* required for a flex child to actually shrink and scroll, instead of forcing the parent to grow */
+  overflow-y: auto;
+  padding-right: 4px; /* keeps content clear of the scrollbar itself */
+}
+
+.herald-actor-override-app .herald-override-fields.herald-override-disabled {
+  opacity: 0.45;
+}
+
+.herald-actor-override-app .herald-settings-footer,
+.herald-actor-override-app fieldset:has(.herald-preview-button) {
+  flex: 0 0 auto;
+}
+
 .herald-preview-button {
   margin-top: 10px;
 }
 
 .herald-card {
   position: fixed;
-  z-index: 100;
+  /* Was 100 — far too low. Foundry's own Application windows commonly
+     exceed z-index 100 once focused (each render/focus bumps a shared
+     counter), so a card triggered via Preview from inside an open
+     config window could render BEHIND that very window. Matched to
+     Game Master Screen's own convention for broadcast overlays that
+     need to sit above anything else on screen, config windows
+     included. */
+  z-index: 100000;
   pointer-events: none;
   transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
   opacity: 0;
