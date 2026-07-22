@@ -88,17 +88,20 @@ without saving or broadcasting to anyone else.
 
 ---
 
-## Per-Actor Portrait Override
+## Per-Actor Template Override
 
-A small icon button on the Prototype Token config window's own title
-bar — overrides just that actor's portrait, independent of whatever the
-global template's Portrait Source is set to.
+A single icon button on the Prototype Token config window's own title
+bar opens one editor: a Portrait Source section (Avatar / Token /
+Custom) that saves independently the moment you hit Save, and an
+"Override for &lt;actor&gt;" checkbox gating the rest of the template
+(message, subtext, backdrop, animation, position, audio, timer) for
+the rarer actor that needs its own entire presentation.
 
-![Prototype Token config window with the Herald override button](../assets/images/guide/herald-character-prototype-token-button.png)
+![Prototype Token config window with the Herald Template Override button](../assets/images/guide/herald-character-prototype-template-override-button.png)
 
-![Portrait override dialog](../assets/images/guide/herald-character-portrait-override-dialog.png)
+![Template Override editor — Portrait Source, Override checkbox, and full template fields](../assets/images/guide/herald-character-prototype-template-override-config.png)
 
-![Portrait override dialog](../assets/images/guide/herald-character-custom-portrait-override-example.png)
+![Preview of a triggered template override](../assets/images/guide/herald-character-prototype-template-override-preview.png)
 
 ---
 

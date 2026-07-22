@@ -70,17 +70,23 @@ function stringifyFieldValue(value, path) {
  */
 export function resolvePortraitPath(template, { actor, token } = {}) {
   // A per-actor override (set via the Prototype Token config window's
-  // Herald button) always wins outright, regardless of whatever the
-  // global template's Portrait Source is set to. Gating it behind
-  // Portrait Source specifically being "Custom" would mean a GM has to
-  // break the global default for every other actor just to override one
-  // or two specific NPCs — nobody would actually do that. This way the
-  // vast majority of actors use whatever the global template says
-  // (typically Token), and only the handful someone explicitly
-  // overrides get their own art, with zero need to touch the global
-  // setting at all.
-  const override = actor?.getFlag(MODULE_ID, "customPortraitPath");
-  if (override) return override;
+  // Herald button, Portrait Source section) always wins outright,
+  // regardless of whatever the global template's Portrait Source is
+  // set to. Only actors someone has actually opened that editor for and
+  // saved carry this flag at all — most actors have none, and fall
+  // through to whatever the global template says (typically Token),
+  // with zero need to touch the global setting to get there.
+  const portraitOverride = actor?.getFlag(MODULE_ID, "portraitOverride");
+  if (portraitOverride?.source) {
+    switch (portraitOverride.source) {
+      case PORTRAIT_SOURCES.AVATAR:
+        return actor?.img || null;
+      case PORTRAIT_SOURCES.TOKEN:
+        return token?.texture?.src || null;
+      case PORTRAIT_SOURCES.CUSTOM:
+        return portraitOverride.customPath || null;
+    }
+  }
 
   switch (template.portraitSource) {
     case PORTRAIT_SOURCES.AVATAR:

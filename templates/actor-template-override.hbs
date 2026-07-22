@@ -1,0 +1,192 @@
+<div class="herald-settings-content">
+
+<fieldset class="herald-portrait-source-fieldset">
+  <legend>Portrait Source — {{actorName}}</legend>
+  <label class="herald-radio">
+    <input type="radio" name="portraitSource" value="avatar" data-conditional-group="portraitSource" {{#if (heraldEq portraitSource "avatar")}}checked{{/if}} />
+    Avatar
+  </label>
+  <label class="herald-radio">
+    <input type="radio" name="portraitSource" value="token" data-conditional-group="portraitSource" {{#if (heraldEq portraitSource "token")}}checked{{/if}} />
+    Token
+  </label>
+  <label class="herald-radio">
+    <input type="radio" name="portraitSource" value="custom" data-conditional-group="portraitSource" {{#if (heraldEq portraitSource "custom")}}checked{{/if}} />
+    Custom
+  </label>
+
+  <div class="herald-conditional {{#unless (heraldEq portraitSource "custom")}}herald-hidden{{/unless}}"
+       data-conditional-for="portraitSource" data-conditional-value="custom">
+    <div class="herald-field-row">
+      <input type="text" name="customPortraitPath" value="{{customPortraitPath}}" placeholder="path/to/image-or-video" class="herald-fullwidth" />
+      <button type="button" class="herald-browse" data-target="customPortraitPath" data-type="imagevideo">
+        <i class="fa-solid fa-folder-open"></i>
+      </button>
+    </div>
+  </div>
+  <p class="hint">Independent of "Override for {{actorName}}" below — saved as soon as you hit Save, regardless of whether that checkbox is on.</p>
+</fieldset>
+
+<fieldset class="herald-override-enable">
+  <legend>Override for {{actorName}}</legend>
+  <label class="herald-radio">
+    <input type="checkbox" name="overrideEnabled" {{#if overrideEnabled}}checked{{/if}} />
+    Use a full template override for this actor instead of the global template
+  </label>
+  <p class="hint">Unchecked (and saved) fully clears this override — this actor goes back to using whichever global template (PC or NPC) it would normally resolve against, for everything below. Checked, every field below is saved as this actor's own template, independent of any future changes to the global one. Portrait Source above is unaffected either way.</p>
+</fieldset>
+
+<div class="herald-override-fields">
+
+  <fieldset>
+    <legend>Message</legend>
+    <input type="text" name="message" value="{{message}}" class="herald-fullwidth" />
+    <div class="herald-field-picker-row">
+      <select class="herald-field-picker" data-target="message">
+        <option value="">Insert field...</option>
+        {{#each fieldOptions}}
+          <option value="{{this.path}}">{{this.label}}</option>
+        {{/each}}
+      </select>
+      <input type="text" class="herald-custom-field-path" placeholder="custom.path" />
+      <button type="button" class="herald-custom-field-insert" data-target="message">Insert</button>
+    </div>
+    <p class="hint">Accepts {{"{{"}}path{{"}}"}} tokens mixed with static text — e.g. "{{"{{"}}actor.name{{"}}"}} has entered the fray!"</p>
+  </fieldset>
+
+  <fieldset>
+    <legend>Subtext</legend>
+    <input type="text" name="subtext" value="{{subtext}}" class="herald-fullwidth" />
+    <div class="herald-field-picker-row">
+      <select class="herald-field-picker" data-target="subtext">
+        <option value="">Insert field...</option>
+        {{#each fieldOptions}}
+          <option value="{{this.path}}">{{this.label}}</option>
+        {{/each}}
+      </select>
+      <input type="text" class="herald-custom-field-path" placeholder="custom.path" />
+      <button type="button" class="herald-custom-field-insert" data-target="subtext">Insert</button>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Backdrop</legend>
+    <label class="herald-radio">
+      <input type="radio" name="backdropMode" value="none" data-conditional-group="backdropMode" {{#if (heraldEq backdropMode "none")}}checked{{/if}} />
+      None
+    </label>
+    <label class="herald-radio">
+      <input type="radio" name="backdropMode" value="color" data-conditional-group="backdropMode" {{#if (heraldEq backdropMode "color")}}checked{{/if}} />
+      Color
+    </label>
+    <label class="herald-radio">
+      <input type="radio" name="backdropMode" value="image" data-conditional-group="backdropMode" {{#if (heraldEq backdropMode "image")}}checked{{/if}} />
+      Image
+    </label>
+
+    <div class="herald-conditional {{#unless (heraldEq backdropMode "color")}}herald-hidden{{/unless}}"
+         data-conditional-for="backdropMode" data-conditional-value="color">
+      <input type="color" name="backdropColor" value="{{backdropColor}}" />
+    </div>
+
+    <div class="herald-conditional {{#unless (heraldEq backdropMode "image")}}herald-hidden{{/unless}}"
+         data-conditional-for="backdropMode" data-conditional-value="image">
+      <div class="herald-field-row">
+        <input type="text" name="backdropImage" value="{{backdropImage}}" placeholder="path/to/backdrop.jpg" class="herald-fullwidth" />
+        <button type="button" class="herald-browse" data-target="backdropImage" data-type="image">
+          <i class="fa-solid fa-folder-open"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Backdrop Shape</label>
+      <label class="herald-radio">
+        <input type="radio" name="backdropAspect" value="portrait" {{#if (heraldEq backdropAspect "portrait")}}checked{{/if}} />
+        Portrait
+      </label>
+      <label class="herald-radio">
+        <input type="radio" name="backdropAspect" value="landscape" {{#if (heraldEq backdropAspect "landscape")}}checked{{/if}} />
+        Landscape
+      </label>
+      <label class="herald-radio">
+        <input type="radio" name="backdropAspect" value="square" {{#if (heraldEq backdropAspect "square")}}checked{{/if}} />
+        Square
+      </label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Animation</legend>
+    <label class="herald-radio">
+      <input type="radio" name="animation" value="slideLeft" {{#if (heraldEq animation "slideLeft")}}checked{{/if}} />
+      Slide Left
+    </label>
+    <label class="herald-radio">
+      <input type="radio" name="animation" value="slideRight" {{#if (heraldEq animation "slideRight")}}checked{{/if}} />
+      Slide Right
+    </label>
+    <label class="herald-radio">
+      <input type="radio" name="animation" value="dropIn" {{#if (heraldEq animation "dropIn")}}checked{{/if}} />
+      Drop In
+    </label>
+    <label class="herald-radio">
+      <input type="radio" name="animation" value="fade" {{#if (heraldEq animation "fade")}}checked{{/if}} />
+      Fade
+    </label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Position</legend>
+    <select name="position">
+      <option value="center" {{#if (heraldEq position "center")}}selected{{/if}}>Center</option>
+      <option value="topLeft" {{#if (heraldEq position "topLeft")}}selected{{/if}}>Top Left</option>
+      <option value="topRight" {{#if (heraldEq position "topRight")}}selected{{/if}}>Top Right</option>
+      <option value="bottomLeft" {{#if (heraldEq position "bottomLeft")}}selected{{/if}}>Bottom Left</option>
+      <option value="bottomRight" {{#if (heraldEq position "bottomRight")}}selected{{/if}}>Bottom Right</option>
+    </select>
+  </fieldset>
+
+  <fieldset>
+    <legend>Audio &amp; Timing</legend>
+    <div class="form-group">
+      <label>Audio Track (optional)</label>
+      <div class="herald-field-row">
+        <input type="text" name="audioPath" value="{{audioPath}}" placeholder="path/to/audio.ogg" class="herald-fullwidth" />
+        <button type="button" class="herald-browse" data-target="audioPath" data-type="audio">
+          <i class="fa-solid fa-folder-open"></i>
+        </button>
+      </div>
+      <p class="hint">If set, mutes the portrait's own video audio so the two don't play at once. With no track set, a voiced portrait video is free to play its own sound.</p>
+    </div>
+
+    <div class="form-group">
+      <label>
+        <input type="checkbox" name="muteAudio" {{#if muteAudio}}checked{{/if}} />
+        Mute Audio (overrides everything above, no matter what)
+      </label>
+    </div>
+
+    <div class="form-group">
+      <label>Duration (ms)</label>
+      <input type="number" name="timer" value="{{timer}}" min="0" step="500" />
+      <p class="hint">0 requires clicking the card to close it manually.</p>
+    </div>
+  </fieldset>
+
+</div>
+
+<fieldset>
+  <legend>Preview</legend>
+  <p class="hint">Resolves everything above (Portrait Source included, even if unsaved) against this actor's own token and shows it only on your screen.</p>
+  <button type="button" class="herald-preview-button" data-action="preview">
+    <i class="fa-solid fa-eye"></i> Preview
+  </button>
+</fieldset>
+
+<footer class="herald-settings-footer">
+  <button type="button" data-action="save">
+    <i class="fa-solid fa-floppy-disk"></i> Save
+  </button>
+</footer>
+</div>

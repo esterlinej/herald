@@ -51,11 +51,16 @@ needed). No global Custom option — a shared custom path for every actor
 of a type has the same problem the per-actor override below exists to
 fix, so Custom is only available per-actor.
 
-**Per-actor portrait override** — a small icon button on the Prototype
-Token config window's own header lets one specific actor override just
-its portrait, regardless of what the global template's Portrait Source
-is set to. Most actors need nothing set here at all; only the ones a GM
-explicitly overrides carry any extra data.
+**Per-actor template override** — a single header button on the
+Prototype Token config window opens one editor covering everything: a
+Portrait Source section (Avatar / Token / Custom) at the top, saved
+independently the moment you hit Save regardless of anything else in
+the form, plus an "Override for &lt;actor&gt;" checkbox gating the rest
+of the template (message, subtext, backdrop, animation, position,
+audio, timer) for the rarer actor that needs its own entire
+presentation, not just its own picture. Only actors someone has
+actually opened this editor for and saved carry any extra data —
+everyone else falls through to the global PC/NPC template entirely.
 
 **Audio and timing** — an independent audio track, a Mute Audio override
 that always wins regardless of source, and a duration (0 = close
@@ -121,12 +126,24 @@ Settings") configures the PC and NPC templates, each with its own tab:
   exactly what triggering would produce, without saving or broadcasting
   to anyone else.
 
-**Per-Actor Portrait Override** — open an actor's Prototype Token
-config window (via the actor sheet's own "Prototype Token" button), and
-click the small image icon in that window's title bar. Set a file path
-to override just that actor's portrait, independent of the global
-template's Portrait Source — leave blank to use the template's own
-configured source.
+**Per-Actor Template Override** — open an actor's Prototype Token
+config window (via the actor sheet's own "Prototype Token" button),
+click the clapperboard icon in that window's title bar. **Portrait
+Source** sits at the top (Avatar / Token / Custom) and saves
+independently the moment you hit Save, regardless of anything else in
+the form — pre-selected to whatever this actor already resolves to
+(usually the global template's own setting), so opening it fresh shows
+the truth rather than an arbitrary default. Below that, check
+**Override for &lt;actor&gt;** to make every other field (message,
+subtext, backdrop, animation, position, audio, timer) this actor's own
+template, independent of any future edits to the global PC/NPC
+template — leave it unchecked and save to clear that part back to
+inheriting the global template. Note that Save always writes the
+Portrait Source flag regardless of that checkbox — opening this dialog
+just to change, say, the backdrop and hitting Save also pins this
+actor's portrait explicitly from that point on, even if Portrait Source
+wasn't touched. Has its own Preview button, same convention as the
+global Settings form's.
 
 **Foundry's core Configure Settings list** also has two directly-editable
 options for Herald, alongside the "Herald — Settings" menu button:
@@ -143,10 +160,6 @@ options for Herald, alongside the "Herald — Settings" menu button:
   but hasn't been treated as a committed public surface (names/shapes
   could still change); a documented, stable version of this is planned
   but not yet finalized
-- Per-Actor full template override (message/subtext/backdrop/etc., not
-  just portrait) — deferred in favor of shipping the universal
-  templates first; the portrait-only override above covers the most
-  common real need without the overhead of a full per-actor system
 - D&D 5e field map — `SYSTEM_FIELDS` currently only has a PF2e entry;
   the core resolver/render pipeline is system-agnostic, but the
   field-picker's convenience dropdown needs real D&D 5e actor data

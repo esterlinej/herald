@@ -3,6 +3,61 @@
 All notable changes to Herald are documented here. Format loosely
 follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.1.0]
+
+### Added
+- Per-actor template override — a single header button (`fa-clapperboard`)
+  on the Prototype Token config window opens one editor with two
+  independently-savable parts: a **Portrait Source** section (Inherit /
+  Avatar / Token / Custom) at the top, saved as its own actor flag
+  (`portraitOverride`) regardless of anything else in the form; and an
+  **"Override for &lt;actor&gt;"** checkbox gating the rest of the
+  template (message, subtext, backdrop, animation, position, audio,
+  timer), stored as actor flag `templateOverride`. `trigger.js` merges
+  `templateOverride` over the global PC/NPC template (rather than
+  substituting it wholesale) since it deliberately carries no portrait
+  fields — `resolvePortraitPath()` resolves those from
+  `portraitOverride` on its own, falling through to the global
+  template's Portrait Source when that flag is absent or set to
+  Inherit. Unchecking "Override for &lt;actor&gt;" and saving fully
+  clears `templateOverride` without touching `portraitOverride` either
+  way, so the two halves of the form never fight each other.
+- Roadmap item closed: this was the deferred "Per-Actor full template
+  override" item from 1.0.0's roadmap.
+- Has its own Preview button, resolving the current form state
+  (including an unsaved Portrait Source change) against the actor's own
+  token, shown only on the triggering GM's screen.
+
+### Changed
+- Removed the "Inherit" Portrait Source option — just Avatar / Token /
+  Custom now. Pre-selects whatever the actor currently resolves to when
+  the editor opens, and Save always writes the `portraitOverride` flag
+  (no more "unset to inherit" branch). Trade-off worth knowing: opening
+  this editor to change an unrelated field (backdrop, animation, etc.)
+  and hitting Save now also pins that actor's portrait explicitly from
+  that point on, even if Portrait Source itself was never touched —
+  accepted as a reasonable cost for a simpler three-way selector.
+- Replaced the earlier single-field Portrait Override button/dialog
+  (its own separate icon, a bare file-path flag) with the unified
+  editor above — one icon, one place to look, instead of two
+  overlapping systems. `prototype-token-override.js` is removed
+  entirely; delete it from your install along with pulling this update.
+- The override fields area scrolls independently
+  (`.herald-override-fields`), rather than requiring the window itself
+  be resized to reach fields further down the form.
+- Fixed `.herald-card`'s z-index, which was still at its original `100`
+  — far too low for a broadcast overlay, and a real bug once Preview
+  could be triggered from inside an open config window that easily
+  exceeds that z-index once focused. Matched to Game Master Screen's
+  own `100000` convention for the same category of "must sit above
+  everything, including other open windows" overlay.
+- Carried the same layout conventions back into the global Settings
+  app for consistency: Portrait Source now leads each tab (PC and NPC)
+  instead of sitting third, and Preview (with its sample-actor picker)
+  moved out of the scrollable tab panel into a fixed, bordered fieldset
+  next to Save — visible without scrolling regardless of which tab is
+  active or how far down the form you've scrolled.
+
 ## [1.0.1]
 
 ### Removed
