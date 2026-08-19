@@ -8,6 +8,15 @@ follows [Keep a Changelog](https://keepachangelog.com/).
 ### Changed
 - Verified compatibility with Foundry VTT 14.367.
 
+## [1.1.1]
+
+### Fixed
+- Foundry's install error on issue #5 — the admin panel's Package
+  Manifest URL field pointed at a GitHub HTML release page
+  (`/releases/tag/...`) rather than the raw JSON asset, so Foundry
+  tried to parse HTML as JSON and failed with "Unexpected token '<'".
+  Corrected to point at the raw manifest asset.
+
 ## [1.1.0]
 
 ### Added
