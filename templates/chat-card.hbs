@@ -2,7 +2,10 @@
   {{#if portraitIsVideo}}
     <video src="{{portraitPath}}" controls></video>
   {{else}}
-    <img src="{{portraitPath}}" alt="" />
+    <div class="herald-chat-portrait-wrap {{#if chatCardCompact}}herald-chat-portrait-compact{{/if}}">
+      <img class="herald-chat-portrait" src="{{portraitPath}}" alt="" />
+      <div class="herald-chat-portrait-expand-hint"><i class="fa-solid fa-expand"></i></div>
+    </div>
   {{/if}}
 
   {{#if message}}<div class="herald-chat-message">{{message}}</div>{{/if}}

@@ -4,6 +4,7 @@ import { registerSettings, registerSettingsMenu } from "./settings.js";
 import { registerTokenHudButton } from "./token-hud.js";
 import { registerActorDirectoryContextMenu } from "./actor-directory.js";
 import { registerActorTemplateOverrideButton } from "./actor-template-override.js";
+import { registerChatCardInteractions } from "./chat-card-interactions.js";
 import { initSocketListener } from "./socket.js";
 import { showHeraldCard } from "./overlay.js";
 import { triggerHerald } from "./trigger.js";
@@ -22,6 +23,7 @@ Hooks.once("init", () => {
   registerTokenHudButton();
   registerActorDirectoryContextMenu();
   registerActorTemplateOverrideButton();
+  registerChatCardInteractions();
 
   // Exposed for console testing while there's no full config UI yet —
   // not the final public API surface. Try:

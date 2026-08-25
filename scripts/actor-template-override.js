@@ -135,13 +135,23 @@ class ActorTemplateOverrideApp extends HandlebarsApplicationMixin(ApplicationV2)
     const systemFieldMap = SYSTEM_FIELDS[game.system.id] ?? {};
     const fieldOptions = [...CORE_FIELDS, ...(systemFieldMap[kind] ?? [])];
 
+    // `...values` spreads LAST, deliberately overwriting anything
+    // above with a matching key — necessary for message/subtext/
+    // backdrop/etc. to actually pick up `values`' own content. But
+    // when `values` falls back to `globalTemplate` (no full template
+    // override saved yet), that object carries its own portraitSource/
+    // customPortraitPath keys too — which would silently clobber the
+    // effective* values just computed above from the independent
+    // portraitOverride flag the instant this spreads over them. Portrait
+    // Source is its own concern (see the class doc comment) and must
+    // win regardless of `values`, so it's re-applied after the spread.
     return {
       actorName: this.actor.name,
-      portraitSource: effectivePortraitSource,
-      customPortraitPath: effectiveCustomPath,
       overrideEnabled,
       fieldOptions,
-      ...values
+      ...values,
+      portraitSource: effectivePortraitSource,
+      customPortraitPath: effectiveCustomPath
     };
   }
 

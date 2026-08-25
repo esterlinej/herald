@@ -53,6 +53,16 @@ export function registerSettings() {
     restricted: true
   });
 
+  game.settings.register(MODULE_ID, SETTINGS.CHAT_CARD_COMPACT, {
+    name: "Compact Chat Image",
+    hint: "Shows only a cropped band (roughly 40% of the image, centered on its vertical midpoint) of the chat card's image portrait instead of the whole picture — click the band to pop out the full image. Image portraits only; video portraits already carry their own controls and always show in full. Applies to future triggers only — chat cards already posted keep whatever they were posted with.",
+    scope: "world",
+    config: true,
+    type: Boolean,
+    default: false,
+    restricted: true
+  });
+
   game.settings.register(MODULE_ID, SETTINGS.DEBUG_LOGGING, {
     name: "Debug Logging",
     hint: "Shows extra console output for trigger and field-resolution steps — which template resolved, what each {{path}} token evaluated to, and why. Useful when a template isn't showing what you expect.",
