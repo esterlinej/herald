@@ -3,6 +3,40 @@
 All notable changes to Herald are documented here. Format loosely
 follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.2.0]
+
+### Added
+- Chat card portraits are now clickable — opens Foundry's own
+  `ImagePopout` at full size. Local-only by nature: it renders just
+  for whoever clicked, with its own separate "share" button if that
+  viewer wants to push it to the rest of the table (Herald never calls
+  that itself), unlike the live overlay card which broadcasts to
+  everyone the moment it's triggered. Wired through the modern
+  `renderChatMessageHTML` hook (`chat-card-interactions.js`), not the
+  deprecated jQuery `renderChatMessage` hook it replaces. Video
+  portraits are left out — they already carry native `controls` in the
+  chat card, and a click-to-pop-out layered on top would fight clicks
+  meant for the play button and scrubber. Opens at the portrait's own
+  natural pixel dimensions (passed explicitly as `position`) rather
+  than whatever size ImagePopout would otherwise shrink it to on its
+  own — the point of popping out is to see the image at the size it
+  actually is, not a re-fitted version of it; the window is still
+  resizable for a portrait taller than the screen.
+- **Compact Chat Image** setting (off by default) — crops the chat
+  card's image portrait down to a band roughly 40% of its own height,
+  centered on the image's vertical midpoint, so the chat log takes up
+  less space per announcement. Click the band to pop out the full
+  image via the same feature above. Sized with a CSS `aspect-ratio`
+  computed from the image's real natural dimensions plus a flat -30%
+  transform, rather than measured pixel geometry in JS — stays correct
+  even if the card first renders while the Chat sidebar tab isn't
+  active (an ancestor `display: none` makes `clientWidth` read 0) and
+  needs no resize listener to stay aligned afterward. Applies to
+  future triggers only; already-posted chat cards keep whatever HTML
+  they were posted with, since Post Chat Card renders once at post
+  time and that HTML is what syncs to every client, not re-rendered
+  per viewer.
+
 ## [1.1.2]
 
 ### Changed

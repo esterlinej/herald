@@ -1,4 +1,4 @@
-import { MODULE_ID, debug } from "./const.js";
+import { MODULE_ID, SETTINGS, debug } from "./const.js";
 
 /**
  * Posts a static chat message companion to a live Herald trigger — the
@@ -14,11 +14,23 @@ import { MODULE_ID, debug } from "./const.js";
  * from overlay.js's showHeraldCard(), which runs on every connected
  * client via the socket broadcast. Posting from there would create one
  * duplicate ChatMessage per connected player instead of exactly one.
+ *
+ * The rendered HTML string this produces is what gets saved onto the
+ * ChatMessage document and synced to every client as-is — unlike the
+ * live overlay, nothing here re-renders per viewing client. So
+ * Compact Chat Image (a world setting, same scope as Post Chat Card
+ * itself) is read once, right here at post time, and baked into the
+ * HTML; the click-to-pop-out behavior for whatever the resulting
+ * markup contains is wired separately, per viewing client, in
+ * chat-card-interactions.js.
  */
 export async function postHeraldChatCard(resolved, actor) {
   const content = await foundry.applications.handlebars.renderTemplate(
     `modules/${MODULE_ID}/templates/chat-card.hbs`,
-    resolved
+    {
+      ...resolved,
+      chatCardCompact: game.settings.get(MODULE_ID, SETTINGS.CHAT_CARD_COMPACT)
+    }
   );
 
   await ChatMessage.create({

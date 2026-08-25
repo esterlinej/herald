@@ -177,5 +177,6 @@ export const SETTINGS = {
   TEMPLATE_NPC: "templateNpc",
   CARD_SIZE: "cardSize",
   CHAT_CARD_ENABLED: "chatCardEnabled",
+  CHAT_CARD_COMPACT: "chatCardCompactImage",
   DEBUG_LOGGING: "debugLogging"
 };

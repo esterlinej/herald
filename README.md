@@ -76,6 +76,16 @@ trigger uses.
 posts a chat message with the portrait (image or video — neither
 autoplays in chat, so it embeds as-is), resolved name, and subtext, so
 the announcement persists even if someone missed the animated overlay.
+Image portraits (not video) are clickable, popping the full image out
+locally for whoever clicks — Foundry's own `ImagePopout`, which only
+ever shows to the clicking viewer unless they use its own separate
+share button, so this never re-broadcasts to the table on its own.
+
+**Compact Chat Image** (off by default) — an optional world setting
+that shows only a centered ~40%-tall band of the chat card's image
+portrait instead of the whole picture, for a smaller footprint in a
+busy chat log. Click the band the same way as any chat card image to
+pop out the full picture.
 
 **Card Size** (Small / Medium / Large) — a shared, world-level setting.
 Herald's card is broadcast to and rendered identically for everyone at
@@ -150,6 +160,11 @@ options for Herald, alongside the "Herald — Settings" menu button:
 - **Card Size** — Small / Medium / Large, applies to everyone.
 - **Post Chat Card** — checkbox, on by default; disable if you'd rather
   triggers stay purely visual with nothing added to the chat log.
+- **Compact Chat Image** — checkbox, off by default; when on, new chat
+  cards show a cropped band of the image portrait rather than the
+  whole thing, clickable to pop out the full image. Only affects
+  triggers posted after you turn it on — existing chat cards keep
+  whatever they were posted with.
 
 ---
 
