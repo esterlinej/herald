@@ -37,6 +37,20 @@ follows [Keep a Changelog](https://keepachangelog.com/).
   time and that HTML is what syncs to every client, not re-rendered
   per viewer.
 
+### Fixed
+- Per-Actor Template Override dialog: reopening it after saving a
+  Custom Portrait Source (with "Override for &lt;actor&gt;" left
+  unchecked) showed the global template's Portrait Source instead of
+  the actor's actual saved override — the saved flag was correct and
+  Herald triggered with the right portrait either way, only the
+  dialog's own display was wrong. `_prepareContext()`'s returned object
+  spread the global-template fallback (`...values`) *after* the
+  already-correctly-resolved `portraitSource`/`customPortraitPath`
+  keys, so whenever that fallback object carried its own same-named
+  keys (which the global template always does), they silently
+  overwrote the right ones. Moved the two Portrait Source keys after
+  the spread instead.
+
 ## [1.1.2]
 
 ### Changed
