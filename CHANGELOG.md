@@ -3,6 +3,11 @@
 All notable changes to Herald are documented here. Format loosely
 follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.2.1]
+
+### Changed
+- Verified compatibility with Foundry VTT 14.368.
+
 ## [1.2.0]
 
 ### Added
