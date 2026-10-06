@@ -168,8 +168,21 @@ export function defaultTemplate() {
     position: POSITIONS.CENTER,
     audioPath: "",
     muteAudio: false,
+    volume: 50,
     timer: 5000
   };
+}
+
+/** 0–100 slider value. Missing or junk falls back to half volume. */
+export function clampVolume(value) {
+  const n = Number(value);
+  if (!Number.isFinite(n)) return 50;
+  return Math.min(100, Math.max(0, Math.round(n)));
+}
+
+/** Playback gain for HTMLMediaElement.volume. */
+export function volumeGain(value) {
+  return clampVolume(value) / 100;
 }
 
 export const SETTINGS = {

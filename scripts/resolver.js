@@ -1,4 +1,4 @@
-import { MODULE_ID, PORTRAIT_SOURCES, debug } from "./const.js";
+import { MODULE_ID, PORTRAIT_SOURCES, clampVolume, debug } from "./const.js";
 
 const TOKEN_PATTERN = /{{\s*([\w.]+)\s*}}/g;
 const VIDEO_EXTENSIONS = new Set(["webm", "mp4", "m4v", "ogv"]);
@@ -129,6 +129,7 @@ export function resolveTemplate(template, { actor, token } = {}) {
     position: template.position,
     audioPath: template.audioPath || null,
     muteAudio: !!template.muteAudio,
+    volume: clampVolume(template.volume),
     timer: Number(template.timer) || 0
   };
 }

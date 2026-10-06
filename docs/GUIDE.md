@@ -70,7 +70,7 @@ Square) once a backdrop is set.
 
 ## Settings — Audio & Timing
 
-An independent audio track, a Mute Audio override that always wins
+An independent audio track, a volume slider (0–100, also applied to a portrait video's own sound), a Mute Audio override that always wins
 regardless of source, and a duration (0 = manual close).
 
 ![Audio and timing options](../assets/images/guide/herald-template-settings-audio-timing.png)

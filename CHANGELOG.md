@@ -3,6 +3,17 @@
 All notable changes to Herald are documented here. Format loosely
 follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.3.0]
+
+### Added
+- Volume slider (0–100) in Audio & Timing on the PC template, the NPC
+  template, and each actor's template override. Same shape as Game
+  Master Screen: range input plus a live percentage. Applies to the
+  announcement audio track and to a portrait video's own sound when
+  that video is the sound source. Mute Audio still wins. Default is 50. Templates
+  saved before this field existed also open at 50 until the slider is moved
+  and saved.
+
 ## [1.2.1]
 
 ### Changed
