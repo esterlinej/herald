@@ -1,4 +1,4 @@
-import { MODULE_ID, SETTINGS, BACKDROP_MODES, CARD_SIZE_SCALES, debug } from "./const.js";
+import { MODULE_ID, SETTINGS, BACKDROP_MODES, CARD_SIZE_SCALES, volumeGain, debug } from "./const.js";
 
 let activeCardEl = null;
 let activeTimeoutId = null;
@@ -49,10 +49,18 @@ export async function showHeraldCard(resolved) {
   // when set" rule. With no audioPath at all, a voiced portrait video
   // (e.g. an intro clip with a recorded line, not just silent ambient
   // motion) is free to play its own audio.
+  const gain = volumeGain(resolved.volume);
   if (resolved.audioPath && !resolved.muteAudio) {
     activeAudio = new Audio(resolved.audioPath);
+    activeAudio.volume = gain;
     activeAudio.play().catch((err) => debug("Audio playback blocked or failed", err));
   }
+
+  // Portrait video is the sound source only when no track is set and
+  // mute is off. Same gain either way, so a loud intro clip and a loud
+  // stinger both obey the slider.
+  const portraitVideo = cardEl.querySelector("video.herald-portrait");
+  if (portraitVideo && !portraitVideo.muted) portraitVideo.volume = gain;
 
   if (resolved.timer > 0) {
     activeTimeoutId = setTimeout(() => removeActiveCard(), resolved.timer);

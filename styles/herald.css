@@ -435,3 +435,19 @@
   font-size: 0.85em;
   opacity: 0.85;
 }
+
+.herald-volume-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.herald-volume-row input[type="range"] {
+  flex: 1;
+}
+
+.herald-volume-value {
+  min-width: 3.2em;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}

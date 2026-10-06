@@ -9,6 +9,7 @@ import {
   BACKDROP_MODES,
   BACKDROP_ASPECTS,
   defaultTemplate,
+  clampVolume,
   debug
 } from "./const.js";
 import { resolveTemplate, resolveTemplateText } from "./resolver.js";
@@ -130,7 +131,7 @@ class ActorTemplateOverrideApp extends HandlebarsApplicationMixin(ApplicationV2)
     // from the actor's own resolved global template — opening this for
     // the first time and just checking "Enable Override" reproduces
     // exactly what the global template already does.
-    const values = existingTemplateOverride ?? globalTemplate;
+    const values = { ...defaultTemplate(), ...(existingTemplateOverride ?? globalTemplate) };
 
     const systemFieldMap = SYSTEM_FIELDS[game.system.id] ?? {};
     const fieldOptions = [...CORE_FIELDS, ...(systemFieldMap[kind] ?? [])];
@@ -162,6 +163,7 @@ class ActorTemplateOverrideApp extends HandlebarsApplicationMixin(ApplicationV2)
     this.#wireBrowseButtons();
     this.#wireConditionalSections();
     this.#wireEnableToggle();
+    this.#wireVolumeSliders();
   }
 
   #wireFieldPickers() {
@@ -241,6 +243,14 @@ class ActorTemplateOverrideApp extends HandlebarsApplicationMixin(ApplicationV2)
     checkbox.addEventListener("change", applyState);
     applyState();
   }
+  #wireVolumeSliders() {
+    const input = this.element.querySelector('input[type="range"][name="volume"]');
+    const label = input?.parentElement?.querySelector(".herald-volume-value");
+    const update = () => { if (input && label) label.textContent = `${input.value}%`; };
+    update();
+    input?.addEventListener("input", update);
+  }
+
 
   static async _onSave() {
     // Portrait Source is independent of the Enable Override checkbox —
@@ -305,6 +315,7 @@ class ActorTemplateOverrideApp extends HandlebarsApplicationMixin(ApplicationV2)
       position: template.position,
       audioPath: template.audioPath || null,
       muteAudio: !!template.muteAudio,
+      volume: clampVolume(template.volume),
       timer: Number(template.timer) || 0
     };
 
@@ -340,6 +351,7 @@ function readTemplateFromForm(root) {
     position: val("position") || POSITIONS.CENTER,
     audioPath: val("audioPath"),
     muteAudio: checked("muteAudio"),
+    volume: clampVolume(val("volume")),
     timer: Number(val("timer")) || 0
   };
 }

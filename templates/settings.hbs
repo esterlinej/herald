@@ -150,6 +150,16 @@
       </label>
     </div>
 
+
+    <div class="form-group">
+      <label>Volume</label>
+      <div class="herald-volume-row">
+        <input type="range" name="{{kind}}-volume" min="0" max="100" value="{{volume}}" />
+        <span class="herald-volume-value">{{volume}}%</span>
+      </div>
+      <p class="hint">Applies to the audio track and to a portrait video's own sound. 100 is full. Mute still wins.</p>
+    </div>
+
     <div class="form-group">
       <label>Duration (ms)</label>
       <input type="number" name="{{kind}}-timer" value="{{timer}}" min="0" step="500" />

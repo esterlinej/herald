@@ -10,6 +10,7 @@ import {
   BACKDROP_ASPECTS,
   PORTRAIT_SOURCES,
   defaultTemplate,
+  clampVolume,
   debug
 } from "./const.js";
 import { resolveTemplate } from "./resolver.js";
@@ -57,7 +58,7 @@ export class HeraldSettingsApp extends HandlebarsApplicationMixin(ApplicationV2)
     const systemFieldMap = SYSTEM_FIELDS[game.system.id] ?? {};
 
     const tabs = TAB_META.map(({ kind, settingKey, label }, index) => {
-      const template = game.settings.get(MODULE_ID, settingKey) ?? defaultTemplate();
+      const template = { ...defaultTemplate(), ...(game.settings.get(MODULE_ID, settingKey) ?? {}) };
       const fieldOptions = [...CORE_FIELDS, ...(systemFieldMap[kind] ?? [])];
       const sampleActors = game.actors.filter((a) => a.type === kind);
 
@@ -80,6 +81,7 @@ export class HeraldSettingsApp extends HandlebarsApplicationMixin(ApplicationV2)
     this.#wireCustomFieldInsert();
     this.#wireBrowseButtons();
     this.#wireConditionalSections();
+    this.#wireVolumeSliders();
   }
 
   /**
@@ -142,6 +144,15 @@ export class HeraldSettingsApp extends HandlebarsApplicationMixin(ApplicationV2)
       if (radio.checked) this.#applyConditionalVisibility(radio);
     });
   }
+  #wireVolumeSliders() {
+    this.element.querySelectorAll('input[type="range"][name$="-volume"]').forEach((input) => {
+      const label = input.parentElement?.querySelector(".herald-volume-value");
+      const update = () => { if (label) label.textContent = `${input.value}%`; };
+      update();
+      input.addEventListener("input", update);
+    });
+  }
+
 
   #applyConditionalVisibility(radio) {
     const group = radio.dataset.conditionalGroup;
@@ -204,7 +215,6 @@ export class HeraldSettingsApp extends HandlebarsApplicationMixin(ApplicationV2)
   }
 }
 
-/** Inserts text at an input/textarea's current cursor position, replacing any active selection. */
 function insertAtCursor(input, text) {
   const start = input.selectionStart ?? input.value.length;
   const end = input.selectionEnd ?? input.value.length;
@@ -239,6 +249,7 @@ function readTemplateFromForm(root, kind) {
     position: val("position") || POSITIONS.CENTER,
     audioPath: val("audioPath"),
     muteAudio: checked("muteAudio"),
+    volume: clampVolume(val("volume")),
     timer: Number(val("timer")) || 0
   };
 }
