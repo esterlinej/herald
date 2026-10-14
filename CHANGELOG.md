@@ -3,6 +3,14 @@
 All notable changes to Herald are documented here. Format loosely
 follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.3.1]
+
+### Security
+- Incoming Herald broadcasts are ignored unless they were sent by a GM (checked against the sender id supplied by Foundry's server), so a player client can no longer pop a card on everyone's screen.
+
+### Changed
+- Verified compatibility with Foundry VTT 14.369.
+
 ## [1.3.0]
 
 ### Added

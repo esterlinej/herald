@@ -10,7 +10,13 @@ const SOCKET_NAME = `module.${MODULE_ID}`;
 
 /** Registered from the `ready` hook — listens for other clients' triggers and renders them locally. */
 export function initSocketListener() {
-  game.socket.on(SOCKET_NAME, (resolved) => {
+  game.socket.on(SOCKET_NAME, (resolved, senderId) => {
+    // Only GMs may trigger Herald. senderId is supplied by Foundry's server
+    // (second listener argument), so it can't be forged by the payload.
+    if (!game.users.get(senderId)?.isGM) {
+      debug(`Ignored broadcast from non-GM sender ${senderId}`);
+      return;
+    }
     debug("Received broadcast trigger", resolved);
     showHeraldCard(resolved);
   });
