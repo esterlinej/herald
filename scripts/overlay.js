@@ -1,4 +1,5 @@
 import { MODULE_ID, SETTINGS, BACKDROP_MODES, CARD_SIZE_SCALES, volumeGain, debug } from "./const.js";
+import { releaseMediaInRoot, releaseAudioInstance } from "./media-elements.js";
 
 let activeCardEl = null;
 let activeTimeoutId = null;
@@ -76,16 +77,20 @@ function removeActiveCard() {
     activeTimeoutId = null;
   }
   if (activeAudio) {
-    activeAudio.pause();
+    releaseAudioInstance(activeAudio);
     activeAudio = null;
   }
   if (activeCardEl) {
     const el = activeCardEl;
     activeCardEl = null;
+    releaseMediaInRoot(el);
     el.classList.remove("herald-visible");
     // Let the exit transition actually play before removing the element,
     // rather than yanking it out of the DOM mid-animation.
-    setTimeout(() => el.remove(), 400);
+    setTimeout(() => {
+      releaseMediaInRoot(el);
+      el.remove();
+    }, 400);
   }
 }
 

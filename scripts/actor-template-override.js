@@ -14,6 +14,7 @@ import {
 } from "./const.js";
 import { resolveTemplate, resolveTemplateText } from "./resolver.js";
 import { showHeraldCard } from "./overlay.js";
+import { renderOrFocusActorOverrideApp } from "./app-lifecycle.js";
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api;
 
@@ -68,7 +69,7 @@ function injectTemplateOverrideButton(app, html) {
   button.classList.add("header-control", "icon", "fa-solid", "fa-clapperboard", "herald-template-override-button");
   button.dataset.tooltip = "Herald: Template Override";
   button.setAttribute("aria-label", "Herald: Template Override");
-  button.addEventListener("click", () => new ActorTemplateOverrideApp({ actor }).render(true));
+  button.addEventListener("click", () => renderOrFocusActorOverrideApp(ActorTemplateOverrideApp, { actor }));
 
   const toggleControls = header.querySelector('[data-action="toggleControls"]');
   if (toggleControls) {
@@ -78,7 +79,7 @@ function injectTemplateOverrideButton(app, html) {
   }
 }
 
-class ActorTemplateOverrideApp extends HandlebarsApplicationMixin(ApplicationV2) {
+export class ActorTemplateOverrideApp extends HandlebarsApplicationMixin(ApplicationV2) {
   constructor({ actor }, options = {}) {
     super(options);
     this.actor = actor;
@@ -158,15 +159,29 @@ class ActorTemplateOverrideApp extends HandlebarsApplicationMixin(ApplicationV2)
 
   _onRender(context, options) {
     super._onRender(context, options);
-    this.#wireFieldPickers();
-    this.#wireCustomFieldInsert();
-    this.#wireBrowseButtons();
-    this.#wireConditionalSections();
-    this.#wireEnableToggle();
-    this.#wireVolumeSliders();
+    this.#bindDomListeners();
   }
 
-  #wireFieldPickers() {
+  async _onClose(options) {
+    this._domAbort?.abort();
+    this._domAbort = null;
+    return super._onClose(options);
+  }
+
+  #bindDomListeners() {
+    this._domAbort?.abort();
+    this._domAbort = new AbortController();
+    const { signal } = this._domAbort;
+
+    this.#wireFieldPickers(signal);
+    this.#wireCustomFieldInsert(signal);
+    this.#wireBrowseButtons(signal);
+    this.#wireConditionalSections(signal);
+    this.#wireEnableToggle(signal);
+    this.#wireVolumeSliders(signal);
+  }
+
+  #wireFieldPickers(signal) {
     this.element.querySelectorAll(".herald-field-picker").forEach((select) => {
       select.addEventListener("change", () => {
         const path = select.value;
@@ -175,11 +190,11 @@ class ActorTemplateOverrideApp extends HandlebarsApplicationMixin(ApplicationV2)
         const input = this.element.querySelector(`[name="${CSS.escape(targetName)}"]`);
         if (input) insertAtCursor(input, `{{${path}}}`);
         select.value = "";
-      });
+      }, { signal });
     });
   }
 
-  #wireCustomFieldInsert() {
+  #wireCustomFieldInsert(signal) {
     this.element.querySelectorAll(".herald-custom-field-insert").forEach((button) => {
       button.addEventListener("click", () => {
         const row = button.closest(".herald-field-row");
@@ -191,11 +206,11 @@ class ActorTemplateOverrideApp extends HandlebarsApplicationMixin(ApplicationV2)
           insertAtCursor(input, `{{${path}}}`);
           customInput.value = "";
         }
-      });
+      }, { signal });
     });
   }
 
-  #wireBrowseButtons() {
+  #wireBrowseButtons(signal) {
     const FP = foundry.applications.apps.FilePicker.implementation;
     this.element.querySelectorAll(".herald-browse").forEach((button) => {
       button.addEventListener("click", () => {
@@ -208,13 +223,13 @@ class ActorTemplateOverrideApp extends HandlebarsApplicationMixin(ApplicationV2)
             if (field) field.value = path;
           }
         }).render(true);
-      });
+      }, { signal });
     });
   }
 
-  #wireConditionalSections() {
+  #wireConditionalSections(signal) {
     this.element.querySelectorAll('input[type="radio"][data-conditional-group]').forEach((radio) => {
-      radio.addEventListener("change", () => this.#applyConditionalVisibility(radio));
+      radio.addEventListener("change", () => this.#applyConditionalVisibility(radio), { signal });
       if (radio.checked) this.#applyConditionalVisibility(radio);
     });
   }
@@ -232,7 +247,7 @@ class ActorTemplateOverrideApp extends HandlebarsApplicationMixin(ApplicationV2)
    * now, specifically so it stays live and editable no matter what this
    * checkbox is set to.
    */
-  #wireEnableToggle() {
+  #wireEnableToggle(signal) {
     const checkbox = this.element.querySelector('input[name="overrideEnabled"]');
     if (!checkbox) return;
     const applyState = () => {
@@ -240,15 +255,15 @@ class ActorTemplateOverrideApp extends HandlebarsApplicationMixin(ApplicationV2)
         .forEach((el) => { el.disabled = !checkbox.checked; });
       this.element.querySelector(".herald-override-fields")?.classList.toggle("herald-override-disabled", !checkbox.checked);
     };
-    checkbox.addEventListener("change", applyState);
+    checkbox.addEventListener("change", applyState, { signal });
     applyState();
   }
-  #wireVolumeSliders() {
+  #wireVolumeSliders(signal) {
     const input = this.element.querySelector('input[type="range"][name="volume"]');
     const label = input?.parentElement?.querySelector(".herald-volume-value");
     const update = () => { if (input && label) label.textContent = `${input.value}%`; };
     update();
-    input?.addEventListener("input", update);
+    input?.addEventListener("input", update, { signal });
   }
 
 

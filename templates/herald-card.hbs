@@ -7,7 +7,7 @@
 
     <div class="herald-portrait-wrap">
       {{#if portraitIsVideo}}
-        <video class="herald-portrait" src="{{portraitPath}}" autoplay loop {{#if portraitMuted}}muted{{/if}} playsinline></video>
+        <video class="herald-portrait" src="{{portraitPath}}" preload="none" autoplay loop {{#if portraitMuted}}muted{{/if}} playsinline></video>
       {{else}}
         <img class="herald-portrait" src="{{portraitPath}}" alt="" />
       {{/if}}
