@@ -28,21 +28,27 @@ import { triggerHerald } from "./trigger.js";
  * specific attribute — first thing to check via console if the entry
  * shows up but resolves the wrong actor.
  */
+/** Resolve the Actor for an Actor Directory context-menu row (v14 onClick target). */
+function resolveActorFromDirectoryTarget(target) {
+  if (!(target instanceof HTMLElement)) return null;
+  const row = target.closest("[data-entry-id], [data-document-id]") ?? target;
+  const actorId = row.dataset?.entryId ?? row.dataset?.documentId;
+  return actorId ? game.actors.get(actorId) : null;
+}
+
 export function registerActorDirectoryContextMenu() {
   Hooks.on("getActorContextOptions", (_application, menuItems) => {
     menuItems.push({
-      name: "Herald",
+      label: "Herald",
       icon: '<i class="fa-solid fa-bullhorn"></i>',
       // Hides the entry entirely for non-GMs rather than showing it and
       // failing silently on click — players can see limited context
       // menu entries for actors they own.
-      condition: () => game.user.isGM,
-      callback: (li) => {
-        const entryElement = li instanceof HTMLElement ? li : li?.[0];
-        const actorId = entryElement?.dataset?.entryId ?? entryElement?.dataset?.documentId;
-        const actor = game.actors.get(actorId);
+      visible: () => game.user.isGM,
+      onClick: (_event, target) => {
+        const actor = resolveActorFromDirectoryTarget(target);
         if (!actor) {
-          debug(`Actor Directory: couldn't resolve actor id from context menu target`, entryElement);
+          debug(`Actor Directory: couldn't resolve actor id from context menu target`, target);
           return;
         }
         triggerHerald({ actor, token: actor.prototypeToken });
