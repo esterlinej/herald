@@ -17,6 +17,9 @@ follows [Keep a Changelog](https://keepachangelog.com/).
   instances.
 - Guide screenshots live under `docs/images/`; release `module.zip`
   excludes `docs/` (repo-only documentation).
+- Actor Directory context menu entry uses v14 `ContextMenuEntry` fields
+  (`label`, `visible`, `onClick`) instead of deprecated `name` / `condition` /
+  `callback` (removed in v16).
 - Verified compatibility with Foundry VTT 14.370.
 
 ## [1.3.1]
