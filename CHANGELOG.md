@@ -3,6 +3,22 @@
 All notable changes to Herald are documented here. Format loosely
 follows [Keep a Changelog](https://keepachangelog.com/).
 
+## [1.3.2]
+
+### Changed
+- Portrait videos use `preload="none"` on the live overlay card so large
+  clips are not downloaded until a trigger actually shows them.
+- Overlay dismiss/switch releases portrait video/image decode buffers and
+  detaches announcement `Audio()` instances instead of leaving `src`
+  populated on removed nodes.
+- Herald Settings and Template Override windows tear down DOM listeners on
+  close/re-render (AbortController) and re-focus an already-open override
+  editor for the same actor instead of stacking duplicate ApplicationV2
+  instances.
+- Guide screenshots live under `docs/images/`; release `module.zip`
+  excludes `docs/` (repo-only documentation).
+- Verified compatibility with Foundry VTT 14.370.
+
 ## [1.3.1]
 
 ### Security

@@ -2,7 +2,7 @@
 
 Foundry VTT module for animated actor/NPC intro announcements. Slide, drop, or fade a token's portrait onto every player's screen with custom text and live actor data pulled straight from the actor sheet.
 
-![Token HUD trigger](assets/images/guide/herald-card-large-example.png)
+![Herald card example](docs/images/guide/herald-card-large-example.png)
 
 📸 **[Visual Guide](docs/GUIDE.md)** — screenshots of every part of the module, if you'd rather look than read.
 
@@ -10,37 +10,15 @@ Foundry VTT module for animated actor/NPC intro announcements. Slide, drop, or f
 
 ## Features
 
-**Trigger from Token HUD or the Actor Directory** — right-click a token to open its HUD, or right-click an actor in the sidebar directory. No macro knowledge required for the common case. Directory triggers use the actor's own `prototypeToken`, since there's no placed token in that path — for an unlinked NPC customized on a specific placement (a common pattern: five placed "Goblin" tokens each with their own HP/notes), trigger from that specific token's own Token HUD button instead, since the directory always resolves against the shared base actor.
+**Trigger from Token HUD or the Actor Directory** — right-click a token or an actor in the sidebar. **Two universal templates** (PC / NPC) in **Herald — Settings**, plus optional **per-actor Template Override** on the Prototype Token config window. **Animated entrance**, optional **backdrop**, **`{{path}}` templating** with a field picker, **portrait video** support, **audio + volume**, **live preview**, and an optional **chat card** companion. **Card Size** is a shared world setting. **GM-only.**
 
-**Two universal templates** — one for PCs, one for NPCs/Creatures, each configured once in Settings. Clicking Herald on any token resolves the matching template with zero per-actor setup required.
-
-**Animated entrance** — Slide Left, Slide Right, Drop In, or Fade, at Center or any of four corners. The card is offset, not full-screen — an announcement, not a blocking overlay.
-
-**Optional backdrop** — a secondary panel behind the portrait/video, solid color or a second image, in Portrait, Landscape, or Square proportions, for real ornate-frame-style art rather than a same-size panel peeking out from behind.
-
-**Live actor data in your text** — message and subtext fields accept `{{path}}` tokens resolved against the triggering actor/token at render time (e.g. `{{actor.name}} has entered the fray!`, mixed freely with static text). A field-picker dropdown offers common fields for any system plus a per-system field map (PF2e shipped as the reference implementation, split by PC vs NPC since fields like Blurb and Personality only exist on one actor type each), plus a custom-path box for anything neither anticipates.
-
-**Portrait Source** — Avatar (the sheet portrait) or Token (whatever's actually configured in the token's texture slot — image or video, detected automatically by file extension, no separate mode toggle needed). No global Custom option — a shared custom path for every actor of a type has the same problem the per-actor override below exists to fix, so Custom is only available per-actor.
-
-**Per-actor template override** — a single header button on the Prototype Token config window opens one editor covering everything: a Portrait Source section (Avatar / Token / Custom) at the top, saved independently the moment you hit Save regardless of anything else in the form, plus an "Override for <actor>" checkbox gating the rest of the template (message, subtext, backdrop, animation, position, audio, timer) for the rarer actor that needs its own entire presentation, not just its own picture. Only actors someone has actually opened this editor for and saved carry any extra data — everyone else falls through to the global PC/NPC template entirely.
-
-**Audio and timing** — an independent audio track, a volume slider (0–100, default 50) that also covers a portrait video's own sound, a Mute Audio override that always wins regardless of source, and a duration (0 = close manually by clicking the card). With no audio track set, a voiced portrait video is free to play its own embedded sound, at that same volume.
-
-**Live preview** — Settings includes a Preview button that resolves the current (unsaved) form values against a real sample actor and shows it only on your own screen, using the exact same render pipeline a live trigger uses.
-
-**Chat card companion** (on by default, toggleable) — every trigger also posts a chat message with the portrait (image or video — neither autoplays in chat, so it embeds as-is), resolved name, and subtext, so the announcement persists even if someone missed the animated overlay. Image portraits (not video) are clickable, popping the full image out locally for whoever clicks — Foundry's own `ImagePopout`, which only ever shows to the clicking viewer unless they use its own separate share button, so this never re-broadcasts to the table on its own.
-
-**Compact Chat Image** (off by default) — an optional world setting that shows only a centered ~40%-tall band of the chat card's image portrait instead of the whole picture, for a smaller footprint in a busy chat log. Click the band the same way as any chat card image to pop out the full picture.
-
-**Card Size** (Small / Medium / Large) — a shared, world-level setting. Herald's card is broadcast to and rendered identically for everyone at the table, not a personal preview pane, so this scales the whole card (portrait, backdrop, text) the same for everyone rather than being a per-person preference.
-
-**GM-only, by design and in practice** — the Token HUD button and Actor Directory entry are both hidden from players outright (not just disabled), and the trigger function itself checks GM status as a second layer.
+See the [Visual Guide](docs/GUIDE.md) for labeled screenshots and step-by-step coverage of every field.
 
 ---
 
 ## Requirements
 
-Requires Foundry VTT V14. Compatibility capped at V14 until explicitly verified against other major versions.
+Requires Foundry VTT V14 (currently verified on **14.370**). Compatibility is capped at V14 until another major version is explicitly verified.
 
 ---
 
@@ -50,29 +28,13 @@ Install via the module manifest URL in Foundry's Add-on Modules browser, or down
 
 ---
 
-## Usage
+## Quick start
 
-**Scene Controls** aren't used — Herald triggers from two existing Foundry surfaces instead:
+1. **Configure Settings** — Foundry **Configure Settings** → **Herald — Settings** (PC and NPC tabs).
+2. **Trigger** — Token HUD bullhorn icon, or Actor Directory context menu **Herald**.
+3. **Optional overrides** — Prototype Token config title bar (clapperboard icon) for per-actor portrait source and template overrides.
 
-- **Token HUD** — right-click a placed token, click the bullhorn icon.
-- **Actor Directory** — right-click an actor in the sidebar, click "Herald" in the context menu.
-
-**Settings** (Foundry's core Configure Settings menu → "Herald — Settings") configures the PC and NPC templates, each with its own tab:
-
-- **Message / Subtext** — text fields with `{{path}}` templating; the field-picker dropdown beside each inserts a token at the cursor position, so static text and live data mix freely.
-- **Portrait Source** — Avatar or Token.
-- **Backdrop** — None / Color / Image, plus a shape selector (Portrait / Landscape / Square) when a backdrop is set.
-- **Animation** and **Position**.
-- **Audio Track**, **Volume**, **Mute Audio**, and **Duration**. Volume defaults to 50 and applies to the track and to a portrait video's own sound. Mute still wins. Preview uses the unsaved slider.
-- **Preview** — pick a sample actor of the matching type and see exactly what triggering would produce, without saving or broadcasting to anyone else.
-
-**Per-Actor Template Override** — open an actor's Prototype Token config window (via the actor sheet's own "Prototype Token" button), click the clapperboard icon in that window's title bar. **Portrait Source** sits at the top (Avatar / Token / Custom) and saves independently the moment you hit Save, regardless of anything else in the form — pre-selected to whatever this actor already resolves to (usually the global template's own setting), so opening it fresh shows the truth rather than an arbitrary default. Below that, check **Override for <actor>** to make every other field (message, subtext, backdrop, animation, position, audio, timer) this actor's own template, independent of any future edits to the global PC/NPC template — leave it unchecked and save to clear that part back to inheriting the global template. Note that Save always writes the Portrait Source flag regardless of that checkbox — opening this dialog just to change, say, the backdrop and hitting Save also pins this actor's portrait explicitly from that point on, even if Portrait Source wasn't touched. Has its own Preview button, same convention as the global Settings form's.
-
-**Foundry's core Configure Settings list** also has three directly-editable options for Herald, alongside the "Herald — Settings" menu button:
-
-- **Card Size** — Small / Medium / Large, applies to everyone.
-- **Post Chat Card** — checkbox, on by default; disable if you'd rather triggers stay purely visual with nothing added to the chat log.
-- **Compact Chat Image** — checkbox, off by default; when on, new chat cards show a cropped band of the image portrait rather than the whole thing, clickable to pop out the full image. Only affects triggers posted after you turn it on — existing chat cards keep whatever they were posted with.
+Additional toggles in the core settings list: **Card Size**, **Post Chat Card**, **Compact Chat Image**, **Debug Logging**.
 
 ---
 

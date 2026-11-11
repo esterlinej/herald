@@ -77,11 +77,26 @@ export class HeraldSettingsApp extends HandlebarsApplicationMixin(ApplicationV2)
 
   _onRender(context, options) {
     super._onRender(context, options);
-    this.#wireFieldPickers();
-    this.#wireCustomFieldInsert();
-    this.#wireBrowseButtons();
-    this.#wireConditionalSections();
-    this.#wireVolumeSliders();
+    this.#bindDomListeners();
+  }
+
+  async _onClose(options) {
+    this._domAbort?.abort();
+    this._domAbort = null;
+    return super._onClose(options);
+  }
+
+  /** Re-wire on each render; abort prior listeners so re-renders do not stack. */
+  #bindDomListeners() {
+    this._domAbort?.abort();
+    this._domAbort = new AbortController();
+    const { signal } = this._domAbort;
+
+    this.#wireFieldPickers(signal);
+    this.#wireCustomFieldInsert(signal);
+    this.#wireBrowseButtons(signal);
+    this.#wireConditionalSections(signal);
+    this.#wireVolumeSliders(signal);
   }
 
   /**
@@ -90,7 +105,7 @@ export class HeraldSettingsApp extends HandlebarsApplicationMixin(ApplicationV2)
    * appended to the end), so static text and dynamic fields can be
    * freely mixed in one message.
    */
-  #wireFieldPickers() {
+  #wireFieldPickers(signal) {
     this.element.querySelectorAll(".herald-field-picker").forEach((select) => {
       select.addEventListener("change", () => {
         const path = select.value;
@@ -99,12 +114,12 @@ export class HeraldSettingsApp extends HandlebarsApplicationMixin(ApplicationV2)
         const input = this.element.querySelector(`[name="${CSS.escape(targetName)}"]`);
         if (input) insertAtCursor(input, `{{${path}}}`);
         select.value = ""; // reset to the placeholder so it can be used again
-      });
+      }, { signal });
     });
   }
 
   /** The raw custom-path box + Insert button beside each field-picker. */
-  #wireCustomFieldInsert() {
+  #wireCustomFieldInsert(signal) {
     this.element.querySelectorAll(".herald-custom-field-insert").forEach((button) => {
       button.addEventListener("click", () => {
         const row = button.closest(".herald-field-row");
@@ -116,11 +131,11 @@ export class HeraldSettingsApp extends HandlebarsApplicationMixin(ApplicationV2)
           insertAtCursor(input, `{{${path}}}`);
           customInput.value = "";
         }
-      });
+      }, { signal });
     });
   }
 
-  #wireBrowseButtons() {
+  #wireBrowseButtons(signal) {
     const FP = foundry.applications.apps.FilePicker.implementation;
     this.element.querySelectorAll(".herald-browse").forEach((button) => {
       button.addEventListener("click", () => {
@@ -133,23 +148,23 @@ export class HeraldSettingsApp extends HandlebarsApplicationMixin(ApplicationV2)
             if (field) field.value = path;
           }
         }).render(true);
-      });
+      }, { signal });
     });
   }
 
   /** Portrait Source / Backdrop Mode radios show/hide their dependent fields. */
-  #wireConditionalSections() {
+  #wireConditionalSections(signal) {
     this.element.querySelectorAll('input[type="radio"][data-conditional-group]').forEach((radio) => {
-      radio.addEventListener("change", () => this.#applyConditionalVisibility(radio));
+      radio.addEventListener("change", () => this.#applyConditionalVisibility(radio), { signal });
       if (radio.checked) this.#applyConditionalVisibility(radio);
     });
   }
-  #wireVolumeSliders() {
+  #wireVolumeSliders(signal) {
     this.element.querySelectorAll('input[type="range"][name$="-volume"]').forEach((input) => {
       const label = input.parentElement?.querySelector(".herald-volume-value");
       const update = () => { if (label) label.textContent = `${input.value}%`; };
       update();
-      input.addEventListener("input", update);
+      input.addEventListener("input", update, { signal });
     });
   }
 
