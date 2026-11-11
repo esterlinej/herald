@@ -101,8 +101,10 @@ Audio & Timing) as authoritative.
 
 ## Settings — Backdrop
 
-**None**, **Color**, or **Image**, plus **Backdrop Shape** (Portrait /
-Landscape / Square) when a backdrop is active.
+**None**, **Color**, or **Image** select the backdrop style; **Color** and
+**Image** reveal their path or color picker when selected. **Backdrop Shape**
+— **Portrait**, **Landscape**, or **Square** — sets the frame proportions
+for the backdrop panel.
 
 ![Backdrop mode and shape options](images/guide/herald-template-settings-backdrop.png)
 
@@ -119,16 +121,14 @@ Center or a corner (select control).
 
 ## Settings — Audio & Timing
 
-Optional **Audio Track** (mutes the portrait video's own audio when set so
-sources do not overlap). **Mute Audio** overrides everything. **Volume**
-(0–100, default 50) applies to the track and to a portrait video's embedded
-sound when that video is the sound source. **Duration (ms)** — `0` means
-click the overlay card to dismiss.
+Optional **Audio Track** — when set, the portrait video's own audio is muted
+so the track and video do not play at once. **Mute Audio** overrides
+everything (track and portrait video). **Volume** (0–100, default **50**,
+live percentage label) applies to the audio track and to the portrait
+video's own sound when that video is the sound source. **Duration (ms)** —
+**0** means click the overlay card to close it manually.
 
 ![Audio and timing options](images/guide/herald-template-settings-audio-timing.png)
-
-> **Screenshot note (Joel):** if this capture predates the **Volume** slider,
-re-shoot **Audio & Timing** so the slider and percentage label appear.
 
 ---
 
