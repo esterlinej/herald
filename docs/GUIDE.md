@@ -40,15 +40,13 @@ message, and subtext. Video portraits embed with native controls and do not
 autoplay in chat. **Image** portraits can be clicked to open Foundry's
 `ImagePopout` locally (full size for whoever clicked).
 
+![Chat card example](images/guide/herald-chat-card-example.png)
+
 **Compact Chat Image** (core settings list, off by default) crops **image**
 portraits in chat to a centered band; click the band to pop out the full
 picture. Applies only to messages posted after you enable it.
 
-![Chat card example](images/guide/herald-chat-card-example.png)
-
-> **Screenshot note (Joel):** capture a second screenshot showing **Compact
-> Chat Image** enabled (`herald-chat-card-compact-example.png`) — no asset
-> ships with the module yet.
+![Compact Chat Image example — Ancient Red Dragon](images/guide/herald-chat-card-compact-example.png)
 
 ---
 
